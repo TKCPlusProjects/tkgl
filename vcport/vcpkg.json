@@ -1,0 +1,16 @@
+{
+  "name": "tkgl",
+  "version": "0.1.0",
+  "description": "The tkgl is a port of vcpkg",
+  "homepage": "https://github.com/ZhengXianda/tkgl",
+  "dependencies": [
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    }
+  ]
+}
