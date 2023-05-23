@@ -38,7 +38,7 @@
 vcpkg_download_distfile(ARCHIVE
     URLS "https://github.com/TKCPlusProjects/tkgl/releases/download/0.1.1/tkgl-0.1.1.zip"
     FILENAME "tkgl-0.1.1.zip"
-    SHA512 dac4b096bff4bc9c471fa67b88818d2a25e1957cf68af9bf86fc58ec4e37dd1a982adb3ecc9536f4a03583fd9ea00e4868f3b91b8144caec5267dfbc61ffa1dc
+    SHA512 297e12babf6fdc8e6fa464512d92f286cc7ce6307d3c146c9f9a9aca4c3beb1e651215fd836ca6a6f454421008ba5b4440609690649da94b05262cef24269e5a
 )
 
 vcpkg_extract_source_archive_ex(
