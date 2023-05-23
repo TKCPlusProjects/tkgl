@@ -1,12 +1,10 @@
-#include <tkgl/tkgl_render.hpp>
+#include <tkgl/tkgl_renderer.hpp>
 
 namespace tkht {
 namespace tkgl {
-Renderer::Renderer(Camera *_camera, GLfloat _depth, GLint _dat_seg_len)
-    : camera(_camera), depth(_depth) {
-  shader = new Shader();
-  shader->Generate(dat_seg_count * _dat_seg_len);
-
+Renderer::Renderer(shared_ptr<Camera> camera, GLfloat depth, GLint dat_seg_len) : camera(camera), depth(depth), shader(new Shader()) {
+  shader->Generate(dat_seg_count * dat_seg_len);
+  
   shader->Check();
   shader->Clean();
 }

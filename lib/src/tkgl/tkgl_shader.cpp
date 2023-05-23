@@ -65,6 +65,9 @@ GLuint ShaderProgram(const char *vs, const char *fs) {
 }
 
 Shader::~Shader() {
+  delete size_dat;
+  delete vertex_dat;
+  delete color_dat;
   glDeleteBuffers(3, buffers);
   glDeleteVertexArrays(1, &vertex_arr);
   vertex_arr = 0;
@@ -98,6 +101,10 @@ void Shader::Buffer(GLuint buffer, GLint index, GLint size, GLsizeiptr sizeiptr,
 }
 
 void Shader::Generate(GLint size) {
+  size_dat = new GLfloat[1 * size];
+  vertex_dat = new GLfloat[2 * size];
+  color_dat = new GLfloat[4 * size];
+  
   glGenVertexArrays(1, &vertex_arr); // 生成一个顶点数组
   glGenBuffers(3, buffers);          // 生成三个缓冲区
 
@@ -105,9 +112,7 @@ void Shader::Generate(GLint size) {
   glEnableVertexAttribArray(size_idx);
   glEnableVertexAttribArray(vertex_idx);
   glEnableVertexAttribArray(color_idx);
-  size_dat = new GLfloat[1 * size];
-  vertex_dat = new GLfloat[2 * size];
-  color_dat = new GLfloat[4 * size];
+
   Buffer(buffers[size_idx], size_idx, 1, size, size_dat);
   Buffer(buffers[vertex_idx], vertex_idx, 2, size, vertex_dat);
   Buffer(buffers[color_idx], color_idx, 4, size, color_dat);

@@ -5,7 +5,8 @@
 
 namespace tkht {
 namespace tkgl {
-struct Camera {
+class Camera {
+public:
   /// @brief 单位长度
   float unit;
   /// @brief 相机尺寸
@@ -21,15 +22,15 @@ struct Camera {
   /// @brief 坐标映射矩阵
   float matrix[16] = {0.0f};
 
-  Camera(float _unit);
+  Camera(float unit);
 
   /// @brief 重置视图，中心点和缩放比例
   void ResetView();
 
   /// @brief 设置宽高，并计算视图左下点和右上点的坐标
-  void SetSize(int _width, int _height);
+  void SetSize(int width, int height);
   /// @brief 设置缩放，并计算视图左下点和右上点的坐标
-  void SetZoom(float _zoom);
+  void SetZoom(float zoom);
   /// @brief 计算视图左下点和右上点的坐标
   void Calculate();
 

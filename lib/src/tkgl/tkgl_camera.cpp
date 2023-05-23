@@ -2,8 +2,7 @@
 
 namespace tkht {
 namespace tkgl {
-Camera::Camera(float _unit) {
-  unit = _unit;
+Camera::Camera(float unit) : unit(unit) {
   ResetView();
 }
 
@@ -13,14 +12,14 @@ void Camera::ResetView() {
   zoom = 1.0f;
 }
 
-void Camera::SetSize(int _width, int _height) {
-  width = _width;
-  height = _height;
+void Camera::SetSize(int width, int height) {
+  this->width = width;
+  this->height = height;
   Calculate();
 }
 
-void Camera::SetZoom(float _zoom) {
-  zoom = _zoom;
+void Camera::SetZoom(float zoom) {
+  this->zoom = zoom;
   Calculate();
 }
 

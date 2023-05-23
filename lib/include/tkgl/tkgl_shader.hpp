@@ -5,7 +5,8 @@
 
 namespace tkht {
 namespace tkgl {
-struct Shader {
+class Shader {
+public:
   const GLuint size_idx = 0;
   const GLuint vertex_idx = 1;
   const GLuint color_idx = 2;

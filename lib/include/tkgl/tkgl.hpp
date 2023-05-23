@@ -3,7 +3,7 @@
 
 #include <tkgl/tkgl_base.hpp>
 #include <tkgl/tkgl_camera.hpp>
-#include <tkgl/tkgl_render.hpp>
+#include <tkgl/tkgl_renderer.hpp>
 #include <tkgl/tkgl_shader.hpp>
 
 using namespace tkht::tkgl;
