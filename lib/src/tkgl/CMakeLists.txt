@@ -16,3 +16,12 @@ target_include_directories(
     $<BUILD_INTERFACE:${PROJECT_BASE_INCLUDE}>
     $<INSTALL_INTERFACE:include>
 )
+
+find_package(GLEW REQUIRED)
+find_package(glfw3 CONFIG REQUIRED)
+find_package(tkcore CONFIG REQUIRED)
+
+target_link_libraries(${PROJECT_NAME}
+  GLEW::GLEW
+  glfw
+  tkcore::tkcore)
