@@ -2,7 +2,7 @@
 
 namespace tkht {
 namespace tkgl {
-Renderer::Renderer(shared_ptr<Camera> camera, GLfloat depth, GLint dat_seg_len) : camera(camera), depth(depth), shader(new Shader()) {
+Renderer::Renderer(shared_ptr<Camera> camera, GLfloat depth, GLint dat_seg_len) : camera(camera), depth(depth), shader(make_shared<Shader>()) {
   shader->Generate(dat_seg_count * dat_seg_len);
   
   shader->Check();

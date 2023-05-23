@@ -37,10 +37,10 @@ int main() {
   glewExperimental = GL_TRUE;
   glewInit();
 
-  shared_ptr<Camera> camera(new Camera(25.0f));
+  shared_ptr<Camera> camera = make_shared<Camera>(25.0f);
   camera->SetSize(width, height);
 
-  shared_ptr<RendererLine> renderer_line(new RendererLine(camera));
+  shared_ptr<RendererLine> renderer_line = make_shared<RendererLine>(camera);
 
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
