@@ -1,6 +1,17 @@
 #include <tkcore/tkcore.hpp>
 #include <tkgl/tkgl.hpp>
 
+class RendererPoint : public tkgl::Renderer {
+public:
+  RendererPoint(shared_ptr<Camera> camera) : Renderer(camera, 0.1f, 1) {}
+
+  void GLFlush() override {
+    glEnable(GL_PROGRAM_POINT_SIZE);
+    glDrawArrays(GL_POINTS, 0, shader->count);
+    glDisable(GL_PROGRAM_POINT_SIZE);
+  }
+};
+
 class RendererLine : public tkgl::Renderer {
 public:
   RendererLine(shared_ptr<Camera> camera) : Renderer(camera, 0.1f, 2) {}
@@ -11,6 +22,9 @@ public:
 };
 
 int main() {
+  Debug = true;
+  SubscribeSignalAbort();
+
   if (!glfwInit()) {
     Assert(false, "GLFW Init Failed");
     return -1;
@@ -40,6 +54,7 @@ int main() {
   shared_ptr<Camera> camera = make_shared<Camera>(25.0f);
   camera->SetSize(width, height);
 
+  shared_ptr<RendererPoint> renderer_point = make_shared<RendererPoint>(camera); 
   shared_ptr<RendererLine> renderer_line = make_shared<RendererLine>(camera);
 
   while (!glfwWindowShouldClose(window)) {
@@ -47,12 +62,19 @@ int main() {
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    renderer_line->Push(1.0f, -10.0f, -10.00f, 0.0f, 0.0f, 0.0f, 1.0f);
-    renderer_line->Push(1.0f,  10.0f,  10.00f, 0.0f, 0.0f, 0.0f, 1.0f);
+    int count = 100;
+    for (size_t i = 0; i < count; i++) {
+      renderer_point->Push(5.0f, 0.0f, 0.00f + (i - count/2) * 0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
+    }
+    renderer_point->Flush();
 
-    renderer_line->Push(1.0f, -10.0f,  10.00f, 0.0f, 0.0f, 0.0f, 1.0f);
-    renderer_line->Push(1.0f,  10.0f, -10.00f, 0.0f, 0.0f, 0.0f, 1.0f);
+    for (size_t i = 0; i < count; i++) {
+      renderer_line->Push(1.0f, -5.0f, -5.00f + (i - count/2) * 0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
+      renderer_line->Push(1.0f,  5.0f,  5.00f + (i - count/2) * 0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
 
+      renderer_line->Push(1.0f, -5.0f,  5.00f + (i - count/2) * 0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
+      renderer_line->Push(1.0f,  5.0f, -5.00f + (i - count/2) * 0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
+    }
     renderer_line->Flush();
 
     glfwSwapBuffers(window);
