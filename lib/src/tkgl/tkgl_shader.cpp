@@ -113,9 +113,9 @@ void Shader::Generate(GLint size) {
   glEnableVertexAttribArray(vertex_idx);
   glEnableVertexAttribArray(color_idx);
 
-  Buffer(buffers[size_idx], size_idx, 1, size, size_dat);
-  Buffer(buffers[vertex_idx], vertex_idx, 2, size, vertex_dat);
-  Buffer(buffers[color_idx], color_idx, 4, size, color_dat);
+  Buffer(buffers[size_idx], size_idx, 1, 1 * size * sizeof(GLfloat), size_dat);
+  Buffer(buffers[vertex_idx], vertex_idx, 2, 2 * size * sizeof(GLfloat), vertex_dat);
+  Buffer(buffers[color_idx], color_idx, 4, 4 * size * sizeof(GLfloat), color_dat);
 }
 
 void Shader::Push(const GLfloat size, const GLfloat x, const GLfloat y,
@@ -147,8 +147,6 @@ void Shader::Flush(const GLfloat *matrix) {
   BufferSub(buffers[size_idx], 1 * count * sizeof(GLfloat), size_dat);
   BufferSub(buffers[vertex_idx], 2 * count * sizeof(GLfloat), vertex_dat);
   BufferSub(buffers[color_idx], 4 * count * sizeof(GLfloat), color_dat);
-
-  Check();
 }
 
 bool Shader::IsFull() { return count == count_max; }
