@@ -20,7 +20,7 @@ public:
   GLuint buffers[3];
 
   GLuint count;     // 当前缓存点个数
-  GLuint count_max; // 缓存点个数上限
+  GLuint count_max = 512; // 缓存点个数上限
   GLfloat *vertex_dat, *color_dat, *size_dat;
 
   ~Shader();
