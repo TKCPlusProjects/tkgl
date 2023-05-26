@@ -14,8 +14,6 @@ public:
 
   shared_ptr<Shader> shader; // 着色器
 
-  const int dat_seg_count = 512; // 总图形的数量
-
   /// @brief 初始化
   /// @param camera 视野相机
   /// @param depth 渲染深度

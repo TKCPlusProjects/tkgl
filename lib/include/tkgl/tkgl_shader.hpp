@@ -31,7 +31,7 @@ public:
 
   void Buffer(GLuint buffer, GLint index, GLint size, GLsizeiptr sizeiptr,
               const void *data);
-  void Generate(GLint size);
+  void Generate(GLint dat_seg_len);
 
   void Push(const GLfloat size, const GLfloat x, const GLfloat y,
             const GLfloat r, const GLfloat g, const GLfloat b, const GLfloat a);

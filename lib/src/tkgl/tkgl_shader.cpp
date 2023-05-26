@@ -100,7 +100,8 @@ void Shader::Buffer(GLuint buffer, GLint index, GLint size, GLsizeiptr sizeiptr,
   glBufferData(GL_ARRAY_BUFFER, sizeiptr, data, GL_DYNAMIC_DRAW);
 }
 
-void Shader::Generate(GLint size) {
+void Shader::Generate(GLint dat_seg_len) {
+  GLint size = count_max * dat_seg_len;
   size_dat = new GLfloat[1 * size];
   vertex_dat = new GLfloat[2 * size];
   color_dat = new GLfloat[4 * size];
