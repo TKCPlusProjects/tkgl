@@ -21,9 +21,21 @@ public:
   }
 };
 
+class RendererTriangle : public tkgl::Renderer {
+public:
+  RendererTriangle(shared_ptr<Camera> camera) : Renderer(camera, 0.2f, 3) {}
+
+  void GLFlush() override {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDrawArrays(GL_TRIANGLES, 0, shader->count);
+    glDisable(GL_BLEND);
+  }
+};
+
 int main() {
   Debug = true;
-  SubscribeSignalAbort();
+  SubscribeSignalCrash();
 
   if (!glfwInit()) {
     Assert(false, "GLFW Init Failed");
@@ -56,26 +68,37 @@ int main() {
 
   shared_ptr<RendererPoint> renderer_point = make_shared<RendererPoint>(camera); 
   shared_ptr<RendererLine> renderer_line = make_shared<RendererLine>(camera);
+  shared_ptr<RendererTriangle> renderer_triangle = make_shared<RendererTriangle>(camera);
 
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    int count = 100;
+    int count = 600;
     for (size_t i = 0; i < count; i++) {
-      renderer_point->Push(5.0f, 0.0f, 0.00f + (i - count/2) * 0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
+      float offset = ((float)i - count/2) * 0.2f;
+      renderer_point->Push(5.0f, 0.0f, 0.00f + offset, 0.0f, 0.0f, 0.0f, 1.0f);
     }
     renderer_point->Flush();
 
     for (size_t i = 0; i < count; i++) {
-      renderer_line->Push(1.0f, -5.0f, -5.00f + (i - count/2) * 0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
-      renderer_line->Push(1.0f,  5.0f,  5.00f + (i - count/2) * 0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
+      float offset = ((float)i - count/2) * 0.2f;
+      renderer_line->Push(1.0f, -5.0f, -5.00f + offset, 0.0f, 0.0f, 0.0f, 1.0f);
+      renderer_line->Push(1.0f,  5.0f,  5.00f + offset, 0.0f, 0.0f, 0.0f, 1.0f);
 
-      renderer_line->Push(1.0f, -5.0f,  5.00f + (i - count/2) * 0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
-      renderer_line->Push(1.0f,  5.0f, -5.00f + (i - count/2) * 0.2f, 0.0f, 0.0f, 0.0f, 1.0f);
+      renderer_line->Push(1.0f, -5.0f,  5.00f + offset, 0.0f, 0.0f, 0.0f, 1.0f);
+      renderer_line->Push(1.0f,  5.0f, -5.00f + offset, 0.0f, 0.0f, 0.0f, 1.0f);
     }
     renderer_line->Flush();
+
+    for (size_t i = 0; i < count; i++) {
+        float offset = ((float)i - count/2) * 0.2f;
+        renderer_triangle->Push(1.0f, -1.0f, -1.00f + offset, 1.0f, 0.0f, 0.0f, 0.1f);
+        renderer_triangle->Push(1.0f,  1.0f, -1.00f + offset, 1.0f, 0.0f, 0.0f, 0.1f);
+        renderer_triangle->Push(1.0f,  0.0f,  1.00f + offset, 1.0f, 0.0f, 0.0f, 0.1f);
+    }
+    renderer_triangle->Flush();
 
     glfwSwapBuffers(window);
   }
