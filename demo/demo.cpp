@@ -1,6 +1,12 @@
 #include <tkcore/tkcore.hpp>
 #include <tkgl/tkgl.hpp>
 
+struct GLPoint {
+  float x, y;
+  GLPoint(float x, float y) : x(x), y(y) {}
+};
+
+
 class RendererPoint : public tkgl::Renderer {
 public:
   RendererPoint(shared_ptr<Camera> camera) : Renderer(camera, 0.1f, 1) {}
@@ -65,6 +71,14 @@ int main() {
 
   shared_ptr<Camera> camera = make_shared<Camera>(25.0f);
   camera->SetSize(width, height);
+  camera->SetCenter(10, 0);
+
+  GLPoint point(1, 1);
+  printf("Origin: %.2f, %.2f\n", point.x, point.y);
+  camera->ConvertWorldToScreen((Point*)&point);
+  printf("Screen: %.2f, %.2f\n", point.x, point.y);
+  camera->ConvertScreenToWorld((Point*)&point);
+  printf("World : %.2f, %.2f\n", point.x, point.y);
 
   shared_ptr<RendererPoint> renderer_point = make_shared<RendererPoint>(camera); 
   shared_ptr<RendererLine> renderer_line = make_shared<RendererLine>(camera);

@@ -7,9 +7,8 @@ Camera::Camera(float unit) : unit(unit) {
 }
 
 void Camera::ResetView() {
-  center_x = 0.0f;
-  center_y = 0.0f;
-  zoom = 1.0f;
+  SetZoom(1.0f);
+  SetCenter(0.0f, 0.0f);
 }
 
 void Camera::SetSize(int width, int height) {
@@ -21,6 +20,15 @@ void Camera::SetSize(int width, int height) {
 void Camera::SetZoom(float zoom) {
   this->zoom = zoom;
   Calculate();
+}
+
+void Camera::SetCenter(float x, float y) {
+  this->center_x = x;
+  this->center_y = y;
+  Calculate();
+}
+void Camera::SetCenter(Point* center) {
+  SetCenter(center->x, center->y);
 }
 
 void Camera::Calculate() {
@@ -67,6 +75,12 @@ void Camera::ConvertScreenToWorld(float *x, float *y, const float screen_x,
   *x = (1.0f - u) * lower_x + u * upper_x;
   *y = (1.0f - v) * lower_y + v * upper_y;
 }
+void Camera::ConvertScreenToWorld(Point* p, Point* screen_p) {
+  ConvertScreenToWorld(&p->x, &p->y, screen_p->x, screen_p->y);
+}
+void Camera::ConvertScreenToWorld(Point* p) {
+  ConvertScreenToWorld(p, p);
+}
 
 void Camera::ConvertWorldToScreen(float *x, float *y, const float world_x,
                                   const float world_y) {
@@ -75,6 +89,12 @@ void Camera::ConvertWorldToScreen(float *x, float *y, const float world_x,
 
   *x = u * width;
   *y = (1.0f - v) * height;
+}
+void Camera::ConvertWorldToScreen(Point* p, Point* screen_p) {
+  ConvertWorldToScreen(&p->x, &p->y, screen_p->x, screen_p->y);
+}
+void Camera::ConvertWorldToScreen(Point* p) {
+  ConvertWorldToScreen(p, p);
 }
 } // namespace tkgl
 } // namespace tkht

@@ -31,6 +31,9 @@ public:
   void SetSize(int width, int height);
   /// @brief 设置缩放，并计算视图左下点和右上点的坐标
   void SetZoom(float zoom);
+  /// @brief 设置中心点，并计算视图左下点和右上点的坐标
+  void SetCenter(float x, float y);
+  void SetCenter(Point* center);
   /// @brief 计算视图左下点和右上点的坐标
   void Calculate();
 
@@ -43,11 +46,15 @@ public:
   /// @param screen_x,screen_y 屏幕坐标
   void ConvertScreenToWorld(float *x, float *y, const float screen_x,
                             const float screen_y);
+  void ConvertScreenToWorld(Point* p, Point* screen_p);
+  void ConvertScreenToWorld(Point* p);
   /// @brief 转换屏幕坐标到世界坐标
   /// @param x,y 屏幕坐标
   /// @param world_x,world_y 世界坐标
   void ConvertWorldToScreen(float *x, float *y, const float world_x,
                             const float world_y);
+  void ConvertWorldToScreen(Point* p, Point* screen_p);
+  void ConvertWorldToScreen(Point* p);
 };
 } // namespace tkgl
 } // namespace tkht

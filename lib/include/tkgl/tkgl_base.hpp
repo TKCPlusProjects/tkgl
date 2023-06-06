@@ -9,7 +9,12 @@
 #include <tkcore/tkcore.hpp>
 
 namespace tkht {
-namespace tkgl {} // namespace tkgl
+namespace tkgl {
+struct Point {
+  float x, y;
+  Point(float x, float y) : x(x), y(y) {}
+};
+} // namespace tkgl
 } // namespace tkht
 
 #endif /* tkgl_base_hpp */
