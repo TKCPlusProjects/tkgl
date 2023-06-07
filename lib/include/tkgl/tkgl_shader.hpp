@@ -7,21 +7,21 @@ namespace tkht {
 namespace tkgl {
 class Shader {
 public:
-  const GLuint size_idx = 0;
-  const GLuint vertex_idx = 1;
-  const GLuint color_idx = 2;
+  const int size_idx = 0;
+  const int vertex_idx = 1;
+  const int color_idx = 2;
 
-  GLuint vs_id;
-  GLuint fs_id;
-  GLuint program_id;
-  GLint proj_loc;
+  unsigned int vs_id;
+  unsigned int fs_id;
+  unsigned int program_id;
+  int proj_loc;
 
-  GLuint vertex_arr;
-  GLuint buffers[3];
+  unsigned int vertex_arr;
+  unsigned int buffers[3];
 
-  GLuint count;     // 当前缓存点个数
-  GLuint count_max = 384; // 缓存点个数上限
-  GLfloat *vertex_dat, *color_dat, *size_dat;
+  int count;     // 当前缓存点个数
+  int count_max = 384; // 缓存点个数上限
+  float *vertex_dat, *color_dat, *size_dat;
 
   ~Shader();
   Shader();
@@ -29,16 +29,16 @@ public:
   void Check();
   void Clean();
 
-  void Buffer(GLuint buffer, GLint index, GLint size, GLsizeiptr sizeiptr,
+  void Buffer(unsigned int buffer, int index, int size, GLsizeiptr sizeiptr,
               const void *data);
-  void Generate(GLint dat_seg_len);
+  void Generate(int dat_seg_len);
 
-  void Push(const GLfloat size, const GLfloat x, const GLfloat y,
-            const GLfloat r, const GLfloat g, const GLfloat b, const GLfloat a);
-  void Push(const GLfloat size, Point* point, Color* color);
+  void Push(const float size, const float x, const float y,
+            const float r, const float g, const float b, const float a);
+  void Push(const float size, Point* point, Color* color);
   
-  void BufferSub(GLuint buffer, GLint size, const void *data);
-  void Flush(const GLfloat *matrix);
+  void BufferSub(unsigned int buffer, int size, const void *data);
+  void Flush(const float *matrix);
 
   bool IsFull();
   bool IsEmpty();

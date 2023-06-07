@@ -2,20 +2,20 @@
 
 namespace tkht {
 namespace tkgl {
-Renderer::Renderer(shared_ptr<Camera> camera, GLfloat depth, GLint dat_seg_len) : camera(camera), depth(depth), shader(make_shared<Shader>()) {
+Renderer::Renderer(shared_ptr<Camera> camera, float depth, int dat_seg_len) : camera(camera), depth(depth), shader(make_shared<Shader>()) {
   shader->Generate(dat_seg_len);
   
   shader->Check();
   shader->Clean();
 }
 
-void Renderer::Push(const GLfloat size, const GLfloat x, const GLfloat y,
-                    const GLfloat r, const GLfloat g, const GLfloat b,
-                    const GLfloat a) {
+void Renderer::Push(const float size, const float x, const float y,
+                    const float r, const float g, const float b,
+                    const float a) {
   if (shader->IsFull()) Flush();
   shader->Push(size, x, y, r, g, b, a);
 }
-void Renderer::Push(const GLfloat size, Point* point, Color* color) {
+void Renderer::Push(const float size, Point* point, Color* color) {
   if (shader->IsFull()) Flush();
   shader->Push(size, point, color);
 }

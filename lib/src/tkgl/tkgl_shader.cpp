@@ -25,14 +25,14 @@ const char *fs = "#version 330\n"
 
 const char *matrix_name = "proj_matrix";
 
-GLuint ShaderFromString(const char *source, GLenum type) {
+unsigned int ShaderFromString(const char *source, GLenum type) {
   const char *sources[] = {source};
 
-  GLuint res = glCreateShader(type);
+  unsigned int res = glCreateShader(type);
   glShaderSource(res, 1, sources, NULL);
   glCompileShader(res);
 
-  GLint compile_ok = GL_FALSE;
+  int compile_ok = GL_FALSE;
   glGetShaderiv(res, GL_COMPILE_STATUS, &compile_ok);
   if (compile_ok == GL_FALSE) {
     glDeleteShader(res);
@@ -42,13 +42,13 @@ GLuint ShaderFromString(const char *source, GLenum type) {
   return res;
 }
 
-GLuint ShaderProgram(const char *vs, const char *fs) {
-  GLuint vs_id = ShaderFromString(vs, GL_VERTEX_SHADER);
+unsigned int ShaderProgram(const char *vs, const char *fs) {
+  unsigned int vs_id = ShaderFromString(vs, GL_VERTEX_SHADER);
   Assert(vs_id != 0, "GL_VERTEX_SHADER 着色器编译失败");
-  GLuint fs_id = ShaderFromString(fs, GL_FRAGMENT_SHADER);
+  unsigned int fs_id = ShaderFromString(fs, GL_FRAGMENT_SHADER);
   Assert(fs_id != 0, "GL_FRAGMENT_SHADER 着色器编译失败");
 
-  GLuint program_id = glCreateProgram();
+  unsigned int program_id = glCreateProgram();
   glAttachShader(program_id, vs_id);
   glAttachShader(program_id, fs_id);
   glBindFragDataLocation(program_id, 0, "color");
@@ -57,7 +57,7 @@ GLuint ShaderProgram(const char *vs, const char *fs) {
   glDeleteShader(vs_id);
   glDeleteShader(fs_id);
 
-  GLint status = GL_FALSE;
+  int status = GL_FALSE;
   glGetProgramiv(program_id, GL_LINK_STATUS, &status);
   Assert(status != GL_FALSE, "着色器程序连接失败");
 
@@ -93,18 +93,18 @@ void Shader::Clean() {
   count = 0;
 }
 
-void Shader::Buffer(GLuint buffer, GLint index, GLint size, GLsizeiptr sizeiptr,
+void Shader::Buffer(unsigned int buffer, int index, int size, GLsizeiptr sizeiptr,
                     const void *data) {
   glBindBuffer(GL_ARRAY_BUFFER, buffer);
   glVertexAttribPointer(index, size, GL_FLOAT, GL_FALSE, 0, ((const void *)(0)));
   glBufferData(GL_ARRAY_BUFFER, sizeiptr, data, GL_DYNAMIC_DRAW);
 }
 
-void Shader::Generate(GLint dat_seg_len) {
-  GLint size = count_max * dat_seg_len;
-  size_dat = new GLfloat[1 * size];
-  vertex_dat = new GLfloat[2 * size];
-  color_dat = new GLfloat[4 * size];
+void Shader::Generate(int dat_seg_len) {
+  int size = count_max * dat_seg_len;
+  size_dat = new float[1 * size];
+  vertex_dat = new float[2 * size];
+  color_dat = new float[4 * size];
   
   glGenVertexArrays(1, &vertex_arr); // 生成一个顶点数组
   glGenBuffers(3, buffers);          // 生成三个缓冲区
@@ -114,14 +114,14 @@ void Shader::Generate(GLint dat_seg_len) {
   glEnableVertexAttribArray(vertex_idx);
   glEnableVertexAttribArray(color_idx);
 
-  Buffer(buffers[size_idx], size_idx, 1, 1 * size * sizeof(GLfloat), size_dat);
-  Buffer(buffers[vertex_idx], vertex_idx, 2, 2 * size * sizeof(GLfloat), vertex_dat);
-  Buffer(buffers[color_idx], color_idx, 4, 4 * size * sizeof(GLfloat), color_dat);
+  Buffer(buffers[size_idx], size_idx, 1, 1 * size * sizeof(float), size_dat);
+  Buffer(buffers[vertex_idx], vertex_idx, 2, 2 * size * sizeof(float), vertex_dat);
+  Buffer(buffers[color_idx], color_idx, 4, 4 * size * sizeof(float), color_dat);
 }
 
-void Shader::Push(const GLfloat size, const GLfloat x, const GLfloat y,
-                  const GLfloat r, const GLfloat g, const GLfloat b,
-                  const GLfloat a) {
+void Shader::Push(const float size, const float x, const float y,
+                  const float r, const float g, const float b,
+                  const float a) {
   size_dat[1 * count + 0] = size;
 
   vertex_dat[2 * count + 0] = x;
@@ -134,23 +134,23 @@ void Shader::Push(const GLfloat size, const GLfloat x, const GLfloat y,
 
   ++count;
 }
-void Shader::Push(const GLfloat size, Point* point, Color* color) {
+void Shader::Push(const float size, Point* point, Color* color) {
   Push(size, point->x, point->y, color->r, color->g, color->b, color->a);
 }
 
-void Shader::BufferSub(GLuint buffer, GLint size, const void *data) {
+void Shader::BufferSub(unsigned int buffer, int size, const void *data) {
   glBindBuffer(GL_ARRAY_BUFFER, buffer);
   glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 }
 
-void Shader::Flush(const GLfloat *matrix) {
+void Shader::Flush(const float *matrix) {
   glUseProgram(program_id);
   glUniformMatrix4fv(proj_loc, 1, GL_FALSE, matrix);
 
   glBindVertexArray(vertex_arr);
-  BufferSub(buffers[size_idx], 1 * count * sizeof(GLfloat), size_dat);
-  BufferSub(buffers[vertex_idx], 2 * count * sizeof(GLfloat), vertex_dat);
-  BufferSub(buffers[color_idx], 4 * count * sizeof(GLfloat), color_dat);
+  BufferSub(buffers[size_idx], 1 * count * sizeof(float), size_dat);
+  BufferSub(buffers[vertex_idx], 2 * count * sizeof(float), vertex_dat);
+  BufferSub(buffers[color_idx], 4 * count * sizeof(float), color_dat);
 }
 
 bool Shader::IsFull() { return count == count_max; }
