@@ -9,15 +9,19 @@ Renderer::Renderer(shared_ptr<Camera> camera, float depth, int dat_seg_len) : ca
   shader->Clean();
 }
 
-void Renderer::Push(const float size, const float x, const float y,
-                    const float r, const float g, const float b,
-                    const float a) {
+void Renderer::Push(float size, float x, float y,
+                    float r, float g, float b,
+                    float a) {
   if (shader->IsFull()) Flush();
   shader->Push(size, x, y, r, g, b, a);
 }
-void Renderer::Push(const float size, Point* point, Color* color) {
+void Renderer::Push(float size, Point* point, Color* color) {
   if (shader->IsFull()) Flush();
   shader->Push(size, point, color);
+}
+void Renderer::Push(Point* point, Color* color) {
+  if (shader->IsFull()) Flush();
+  shader->Push(1.0f, point, color);
 }
 
 void Renderer::Flush() {

@@ -1,44 +1,6 @@
 #include <tkcore/tkcore.hpp>
 #include <tkgl/tkgl.hpp>
 
-struct GLPoint {
-  float x, y;
-  GLPoint(float x, float y) : x(x), y(y) {}
-};
-
-
-class RendererPoint : public tkgl::Renderer {
-public:
-  RendererPoint(shared_ptr<Camera> camera) : Renderer(camera, 0.1f, 1) {}
-
-  void GLFlush() override {
-    glEnable(GL_PROGRAM_POINT_SIZE);
-    glDrawArrays(GL_POINTS, 0, shader->count);
-    glDisable(GL_PROGRAM_POINT_SIZE);
-  }
-};
-
-class RendererLine : public tkgl::Renderer {
-public:
-  RendererLine(shared_ptr<Camera> camera) : Renderer(camera, 0.1f, 2) {}
-
-  void GLFlush() override {
-    glDrawArrays(GL_LINES, 0, shader->count);
-  }
-};
-
-class RendererTriangle : public tkgl::Renderer {
-public:
-  RendererTriangle(shared_ptr<Camera> camera) : Renderer(camera, 0.2f, 3) {}
-
-  void GLFlush() override {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDrawArrays(GL_TRIANGLES, 0, shader->count);
-    glDisable(GL_BLEND);
-  }
-};
-
 int main() {
   Debug = true;
   SubscribeSignalCrash();
@@ -71,48 +33,46 @@ int main() {
 
   shared_ptr<Camera> camera = make_shared<Camera>(25.0f);
   camera->SetSize(width, height);
-  camera->SetCenter(10, 0);
 
-  GLPoint point(1, 1);
-  printf("Origin: %.2f, %.2f\n", point.x, point.y);
-  camera->ConvertWorldToScreen((Point*)&point);
-  printf("Screen: %.2f, %.2f\n", point.x, point.y);
-  camera->ConvertScreenToWorld((Point*)&point);
-  printf("World : %.2f, %.2f\n", point.x, point.y);
-
-  shared_ptr<RendererPoint> renderer_point = make_shared<RendererPoint>(camera); 
-  shared_ptr<RendererLine> renderer_line = make_shared<RendererLine>(camera);
-  shared_ptr<RendererTriangle> renderer_triangle = make_shared<RendererTriangle>(camera);
+  shared_ptr<Drawer> drawer = make_shared<Drawer>(camera, 0.0f);
 
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    int count = 600;
-    for (size_t i = 0; i < count; i++) {
-      float offset = ((float)i - count/2) * 0.2f;
-      renderer_point->Push(5.0f, 0.0f, 0.00f + offset, 0.0f, 0.0f, 0.0f, 1.0f);
+    {
+      Color color(1.0f, 0.0f, 0.0f, 1.0f);
+      Point center(0.0f, 0.0f);
+      drawer->DrawPoint(10.0f, &center, &color);
+      Point po(-10.0f, 0.0f);
+      Point pt( 10.0f, 0.0f);
+      drawer->DrawSegment(&po, &pt, &color);
+      vector<Point> vertexes({
+        Point(-2.0f,  2.0f),
+        Point( 2.0f,  2.0f),
+        Point( 2.0f, -2.0f),
+        Point(-2.0f, -2.0f),
+      });
+      drawer->DrawPolygon(vertexes, &color);
+      drawer->DrawCircle(&center, 5.0f, &color);
     }
-    renderer_point->Flush();
 
-    for (size_t i = 0; i < count; i++) {
-      float offset = ((float)i - count/2) * 0.2f;
-      renderer_line->Push(1.0f, -5.0f, -5.00f + offset, 0.0f, 0.0f, 0.0f, 1.0f);
-      renderer_line->Push(1.0f,  5.0f,  5.00f + offset, 0.0f, 0.0f, 0.0f, 1.0f);
-
-      renderer_line->Push(1.0f, -5.0f,  5.00f + offset, 0.0f, 0.0f, 0.0f, 1.0f);
-      renderer_line->Push(1.0f,  5.0f, -5.00f + offset, 0.0f, 0.0f, 0.0f, 1.0f);
+    {
+      Color color(0.0f, 1.0f, 0.0f, 1.0f);
+      vector<Point> vertexes({
+        Point(-2.0f,  2.0f + 10.0f),
+        Point( 2.0f,  2.0f + 10.0f),
+        Point( 2.0f, -2.0f + 10.0f),
+        Point(-2.0f, -2.0f + 10.0f),
+      });
+      drawer->DrawSolidPolygon(vertexes, &color);
+      Point center(0.0f, -10.0f);
+      Point axis(2.0f, 0.0f);
+      drawer->DrawSolidCircle(&center, 5.0f, &axis, &color);
     }
-    renderer_line->Flush();
 
-    for (size_t i = 0; i < count; i++) {
-        float offset = ((float)i - count/2) * 0.2f;
-        renderer_triangle->Push(1.0f, -1.0f, -1.00f + offset, 1.0f, 0.0f, 0.0f, 0.1f);
-        renderer_triangle->Push(1.0f,  1.0f, -1.00f + offset, 1.0f, 0.0f, 0.0f, 0.1f);
-        renderer_triangle->Push(1.0f,  0.0f,  1.00f + offset, 1.0f, 0.0f, 0.0f, 0.1f);
-    }
-    renderer_triangle->Flush();
+    drawer->Flush();
 
     glfwSwapBuffers(window);
   }
