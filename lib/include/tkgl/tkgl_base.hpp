@@ -10,9 +10,17 @@
 
 namespace tkht {
 namespace tkgl {
+struct Size {
+  float w, h;
+  Size(float w, float h) : w(w), h(h) {}
+};
 struct Point {
   float x, y;
   Point(float x, float y) : x(x), y(y) {}
+};
+struct Color {
+  float r, g, b, a;
+  Color(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {}
 };
 } // namespace tkgl
 } // namespace tkht

@@ -12,11 +12,12 @@ Renderer::Renderer(shared_ptr<Camera> camera, GLfloat depth, GLint dat_seg_len) 
 void Renderer::Push(const GLfloat size, const GLfloat x, const GLfloat y,
                     const GLfloat r, const GLfloat g, const GLfloat b,
                     const GLfloat a) {
-  if (shader->IsFull()) {
-    Flush();
-  }
-
+  if (shader->IsFull()) Flush();
   shader->Push(size, x, y, r, g, b, a);
+}
+void Renderer::Push(const GLfloat size, Point* point, Color* color) {
+  if (shader->IsFull()) Flush();
+  shader->Push(size, point, color);
 }
 
 void Renderer::Flush() {

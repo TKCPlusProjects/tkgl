@@ -35,7 +35,8 @@ public:
 
   void Push(const GLfloat size, const GLfloat x, const GLfloat y,
             const GLfloat r, const GLfloat g, const GLfloat b, const GLfloat a);
-
+  void Push(const GLfloat size, Point* point, Color* color);
+  
   void BufferSub(GLuint buffer, GLint size, const void *data);
   void Flush(const GLfloat *matrix);
 

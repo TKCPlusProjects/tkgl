@@ -29,6 +29,7 @@ public:
 
   /// @brief 设置宽高，并计算视图左下点和右上点的坐标
   void SetSize(int width, int height);
+  void SetSize(Size* size);
   /// @brief 设置缩放，并计算视图左下点和右上点的坐标
   void SetZoom(float zoom);
   /// @brief 设置中心点，并计算视图左下点和右上点的坐标

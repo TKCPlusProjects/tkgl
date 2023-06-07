@@ -16,6 +16,9 @@ void Camera::SetSize(int width, int height) {
   this->height = height;
   Calculate();
 }
+void Camera::SetSize(Size* size) {
+  SetSize(size->w, size->h);
+}
 
 void Camera::SetZoom(float zoom) {
   this->zoom = zoom;

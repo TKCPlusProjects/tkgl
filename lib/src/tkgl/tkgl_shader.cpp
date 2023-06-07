@@ -134,6 +134,9 @@ void Shader::Push(const GLfloat size, const GLfloat x, const GLfloat y,
 
   ++count;
 }
+void Shader::Push(const GLfloat size, Point* point, Color* color) {
+  Push(size, point->x, point->y, color->r, color->g, color->b, color->a);
+}
 
 void Shader::BufferSub(GLuint buffer, GLint size, const void *data) {
   glBindBuffer(GL_ARRAY_BUFFER, buffer);
