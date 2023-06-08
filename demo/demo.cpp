@@ -33,44 +33,40 @@ int main() {
 
   shared_ptr<Camera> camera = make_shared<Camera>(25.0f);
   camera->SetSize(width, height);
+  camera->SetZoom(0.5f);
 
   shared_ptr<Drawer> drawer = make_shared<Drawer>(camera, 0.0f);
+  
+  shared_ptr<Graphic> graphic = make_shared<Graphic>();
+  graphic->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
+  graphic->shapes.push_back(make_shared<ShapePoint>(10.0f, Point(0.0f, 0.0f)));
+  graphic->shapes.push_back(make_shared<ShapeSegment>(Point(0.0f, -10.0f), Point(0.0f,  10.0f)));
+  graphic->shapes.push_back(make_shared<ShapePolygon>(vector<Point>{
+    Point(-1.0f,  1.0f),
+    Point( 1.0f,  1.0f),
+    Point( 1.0f, -1.0f),
+    Point(-1.0f, -1.0f),
+  }));
+  graphic->shapes.push_back(make_shared<ShapeCircle>(Point(0.0f, 0.0f), 1.0f));
+
+  shared_ptr<Graphic> graphic_solid = make_shared<Graphic>();
+  graphic_solid->color = Color(0.0f, 1.0f, 0.0f, 1.0f);
+  graphic_solid->fillcolor = Color(0.0f, 0.5f, 0.0f, 0.5f);
+  graphic_solid->shapes.push_back(make_shared<ShapePolygon>(vector<Point>{
+    Point(-1.0f,  1.0f + 5.0f),
+    Point( 1.0f,  1.0f + 5.0f),
+    Point( 1.0f, -1.0f + 5.0f),
+    Point(-1.0f, -1.0f + 5.0f),
+  }, true));
+  graphic_solid->shapes.push_back(make_shared<ShapeCircle>(Point(0.0f, -5.0f), 1.0f, true));
 
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    {
-      Color color(1.0f, 0.0f, 0.0f, 1.0f);
-      Point center(0.0f, 0.0f);
-      drawer->DrawPoint(10.0f, &center, &color);
-      Point po(-10.0f, 0.0f);
-      Point pt( 10.0f, 0.0f);
-      drawer->DrawSegment(&po, &pt, &color);
-      vector<Point> vertexes({
-        Point(-2.0f,  2.0f),
-        Point( 2.0f,  2.0f),
-        Point( 2.0f, -2.0f),
-        Point(-2.0f, -2.0f),
-      });
-      drawer->DrawPolygon(vertexes, &color);
-      drawer->DrawCircle(&center, 5.0f, &color);
-    }
-
-    {
-      Color color(0.0f, 1.0f, 0.0f, 1.0f);
-      vector<Point> vertexes({
-        Point(-2.0f,  2.0f + 10.0f),
-        Point( 2.0f,  2.0f + 10.0f),
-        Point( 2.0f, -2.0f + 10.0f),
-        Point(-2.0f, -2.0f + 10.0f),
-      });
-      drawer->DrawSolidPolygon(vertexes, &color);
-      Point center(0.0f, -10.0f);
-      Point axis(2.0f, 0.0f);
-      drawer->DrawSolidCircle(&center, 5.0f, &axis, &color);
-    }
+    drawer->DrawGraphic(graphic.get());
+    drawer->DrawGraphic(graphic_solid.get());
 
     drawer->Flush();
 
