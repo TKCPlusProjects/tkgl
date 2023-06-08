@@ -36,9 +36,9 @@
 #  vcpkg_from_bitbucket
 #  vcpkg_from_sourceforge
 vcpkg_download_distfile(ARCHIVE
-    URLS "https://github.com/TKCPlusProjects/tkgl/releases/download/0.1.7/tkgl-0.1.7.zip"
-    FILENAME "tkgl-0.1.7.zip"
-    SHA512 8f2347516fffda07b040e43315ad18b0468d527534ffd1264f042751a5c70067cedb6b7df22f6bc52bad11886a378c594309eaf5dfebf115dfb514b62dd3e932
+    URLS "https://github.com/TKCPlusProjects/tkgl/releases/download/0.1.8/tkgl-0.1.8.zip"
+    FILENAME "tkgl-0.1.8.zip"
+    SHA512 6725256c61aa484f773826063f418d752219ce628185ef6e0107f44a379a1d2d0c11f0cfb5fbde11ac208a953045d2c2f77a52899710789cc9dd4cd8a8616d22
 )
 
 vcpkg_extract_source_archive_ex(
