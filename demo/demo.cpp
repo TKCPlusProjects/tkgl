@@ -40,27 +40,39 @@ int main() {
   shared_ptr<Drawer> drawer = make_shared<Drawer>(camera, 0.0f);
   
   shared_ptr<Graphic> graphic = make_shared<Graphic>();
-  graphic->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
-  graphic->shapes.push_back(make_shared<ShapePoint>(10.0f, Point(0.0f, 0.0f)));
-  graphic->shapes.push_back(make_shared<ShapeSegment>(Point(0.0f, -10.0f), Point(0.0f,  10.0f)));
-  graphic->shapes.push_back(make_shared<ShapePolygon>(vector<Point>{
-    Point(-1.0f,  1.0f),
-    Point( 1.0f,  1.0f),
-    Point( 1.0f, -1.0f),
-    Point(-1.0f, -1.0f),
-  }));
-  graphic->shapes.push_back(make_shared<ShapeCircle>(Point(0.0f, 0.0f), 1.0f));
+  graphic->path = "a1.tkgp";
+  if (filesystem::exists(graphic->path)) {
+    graphic->Read();
+  } else {
+    // graphic->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
+    // graphic->shapes.push_back(make_shared<ShapePoint>(10.0f, Point(0.0f, 0.0f)));
+    // graphic->shapes.push_back(make_shared<ShapeSegment>(Point(0.0f, -10.0f), Point(0.0f,  10.0f)));
+    // graphic->shapes.push_back(make_shared<ShapePolygon>(vector<Point>{
+    //   Point(-1.0f,  1.0f),
+    //   Point( 1.0f,  1.0f),
+    //   Point( 1.0f, -1.0f),
+    //   Point(-1.0f, -1.0f),
+    // }));
+    // graphic->shapes.push_back(make_shared<ShapeCircle>(Point(0.0f, 0.0f), 1.0f));
+    // graphic->Write();
+  }
 
   shared_ptr<Graphic> graphic_solid = make_shared<Graphic>();
-  graphic_solid->color = Color(0.0f, 1.0f, 0.0f, 1.0f);
-  graphic_solid->fillcolor = Color(0.0f, 0.5f, 0.0f, 0.5f);
-  graphic_solid->shapes.push_back(make_shared<ShapePolygon>(vector<Point>{
-    Point(-1.0f,  1.0f + 5.0f),
-    Point( 1.0f,  1.0f + 5.0f),
-    Point( 1.0f, -1.0f + 5.0f),
-    Point(-1.0f, -1.0f + 5.0f),
-  }, true));
-  graphic_solid->shapes.push_back(make_shared<ShapeCircle>(Point(0.0f, -5.0f), 1.0f, true));
+  graphic_solid->path = "b1.tkgp";
+  if (filesystem::exists(graphic_solid->path)) {
+    graphic_solid->Read();
+  } else {
+    // graphic_solid->color = Color(0.0f, 1.0f, 0.0f, 1.0f);
+    // graphic_solid->fillcolor = Color(0.0f, 0.5f, 0.0f, 0.5f);
+    // graphic_solid->shapes.push_back(make_shared<ShapePolygon>(vector<Point>{
+    //   Point(-1.0f,  1.0f + 5.0f),
+    //   Point( 1.0f,  1.0f + 5.0f),
+    //   Point( 1.0f, -1.0f + 5.0f),
+    //   Point(-1.0f, -1.0f + 5.0f),
+    // }, true));
+    // graphic_solid->shapes.push_back(make_shared<ShapeCircle>(Point(0.0f, -5.0f), 1.0f, true));
+    // graphic_solid->Write();
+  }
 
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
