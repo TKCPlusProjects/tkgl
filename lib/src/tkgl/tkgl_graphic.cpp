@@ -18,7 +18,7 @@ void Graphic::Write() {
   file.write((char*)&fillcolor.a, sizeof(float));
 
   for (shared_ptr<Shape> shape : shapes) {
-    file.write((char*)&shape->type, sizeof(float));
+    file.write((char*)&shape->type, sizeof(int));
     shape->Write(&file);
   }
 
@@ -42,7 +42,7 @@ void Graphic::Read() {
 
   while(true) {
     Shape::Type type;
-    file.read((char*)&type, sizeof(float));
+    file.read((char*)&type, sizeof(int));
     switch (type) {
     case Shape::TypePoint: {
       shared_ptr<ShapePoint> shape = make_shared<ShapePoint>();

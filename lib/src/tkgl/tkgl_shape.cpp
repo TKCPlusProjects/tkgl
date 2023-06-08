@@ -34,7 +34,7 @@ void ShapePolygon::Write(ofstream* file) {
     file->write((char*)&vertex.x, sizeof(float));
     file->write((char*)&vertex.y, sizeof(float));
   }
-  file->write((char*)&is_solid, sizeof(float));
+  file->write((char*)&is_solid, sizeof(bool));
 }
 void ShapePolygon::Read(ifstream* file) {
   vertexes.clear();
@@ -47,20 +47,20 @@ void ShapePolygon::Read(ifstream* file) {
       file->read((char*)&vertex.y, sizeof(float));
       vertexes.push_back(vertex);
   }
-  file->read((char*)&is_solid, sizeof(float));
+  file->read((char*)&is_solid, sizeof(bool));
 }
 
 void ShapeCircle::Write(ofstream* file) {
   file->write((char*)&center.x, sizeof(float));
   file->write((char*)&center.y, sizeof(float));
   file->write((char*)&radius, sizeof(float));
-  file->write((char*)&is_solid, sizeof(float));
+  file->write((char*)&is_solid, sizeof(bool));
 }
 void ShapeCircle::Read(ifstream* file) {
   file->read((char*)&center.x, sizeof(float));
   file->read((char*)&center.y, sizeof(float));
   file->read((char*)&radius, sizeof(float));
-  file->read((char*)&is_solid, sizeof(float));
+  file->read((char*)&is_solid, sizeof(bool));
 }
 } // namespace tkgl
 } // namespace tkht
