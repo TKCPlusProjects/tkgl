@@ -12,10 +12,12 @@
 namespace tkht {
 namespace tkgl {
 static const float kPI = 3.14159265359f;
-static const float kCircleSegments = 16.0f;
-static const float kCircleIncrement = 2.0f * kPI / kCircleSegments;
-static const float kSinInc = sinf(kCircleIncrement);
-static const float kCosInc = cosf(kCircleIncrement);
+
+extern float kCircleSegments;
+extern float kCircleIncrement;
+extern float kSinInc;
+extern float kCosInc;
+void SetCircleSegments(float v);
 
 struct Size {
   float w, h;

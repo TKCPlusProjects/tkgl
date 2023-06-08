@@ -31,6 +31,8 @@ int main() {
   glewExperimental = GL_TRUE;
   glewInit();
 
+  tkgl::SetCircleSegments(30.0f);
+
   shared_ptr<Camera> camera = make_shared<Camera>(25.0f);
   camera->SetSize(width, height);
   camera->SetZoom(0.5f);
