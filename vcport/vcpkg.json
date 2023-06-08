@@ -1,6 +1,6 @@
 {
   "name": "tkgl",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "The tkgl is a port of vcpkg",
   "homepage": "https://github.com/ZhengXianda/tkgl",
   "dependencies": [
