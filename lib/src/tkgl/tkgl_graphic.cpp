@@ -17,6 +17,8 @@ void Graphic::Write() {
   file.write((char*)&fillcolor.b, sizeof(float));
   file.write((char*)&fillcolor.a, sizeof(float));
 
+  int count = (int)shapes.size();
+  file.write((char*)&count, sizeof(int));
   for (shared_ptr<Shape> shape : shapes) {
     file.write((char*)&shape->type, sizeof(int));
     shape->Write(&file);
@@ -40,7 +42,9 @@ void Graphic::Read() {
   file.read((char*)&fillcolor.b, sizeof(float));
   file.read((char*)&fillcolor.a, sizeof(float));
 
-  while(true) {
+  int count;
+  file.read((char*)&count, sizeof(int));
+  for (size_t i = 0; i < count; i++) {
     Shape::Type type;
     file.read((char*)&type, sizeof(int));
     switch (type) {
@@ -65,7 +69,6 @@ void Graphic::Read() {
       shapes.push_back(shape);
     } break;
     }
-    if(file.eof()) break;
   }
 
   file.close();

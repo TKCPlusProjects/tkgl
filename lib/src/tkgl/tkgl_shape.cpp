@@ -27,7 +27,7 @@ void ShapeSegment::Read(ifstream* file) {
 }
 
 void ShapePolygon::Write(ofstream* file) {
-  int count = vertexes.size();
+  int count = (int)vertexes.size();
   file->write((char*)&count, sizeof(int));
   for (size_t i = 0; i < count; i++) {
     Point vertex = vertexes[i];
