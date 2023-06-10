@@ -74,7 +74,7 @@ int main() {
     // graphic_solid->Write();
   }
 
-  Transform transform(Point(), Rotation(0.02f));
+  Transform transform(Point(10.0f, 0.0f), Rotation());
 
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();

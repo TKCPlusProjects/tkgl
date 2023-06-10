@@ -64,62 +64,67 @@ void Drawer::DrawSolidCircle(Point* center, float radius, Point* axis, Color* co
   DrawCircle(center, radius, color);
 }
 
-void Drawer::DrawGraphic(Graphic* graphic) {
-  for (shared_ptr<Shape> shape : graphic->shapes) {
-    switch (shape->type) {
-    case Shape::TypePoint: {
-      shared_ptr<ShapePoint> type_shape = static_pointer_cast<ShapePoint>(shape);
-      DrawPoint(type_shape->size, &type_shape->p, &graphic->color);
-    } break;
-    case Shape::TypeSegment: {
-      shared_ptr<ShapeSegment> type_shape = static_pointer_cast<ShapeSegment>(shape);
-      DrawSegment(&type_shape->o, &type_shape->t, &graphic->color);
-    } break;
-    case Shape::TypePolygon: {
-      shared_ptr<ShapePolygon> type_shape = static_pointer_cast<ShapePolygon>(shape);
-      if (type_shape->is_solid) {
-        DrawSolidPolygon(type_shape->vertexes.data(), type_shape->vertexes.size(), &graphic->fillcolor);
-      } else {
-        DrawPolygon(type_shape->vertexes.data(), type_shape->vertexes.size(), &graphic->color);
-      }
-    } break;
-    case Shape::TypeCircle: {
-      shared_ptr<ShapeCircle> type_shape = static_pointer_cast<ShapeCircle>(shape);
-      if (type_shape->is_solid) {
-        DrawSolidCircle(&type_shape->center, type_shape->radius, nullptr, &graphic->fillcolor);
-      } else {
-        DrawCircle(&type_shape->center, type_shape->radius, &graphic->color);
-      }
-    } break;
-    }
-  }
-}
-
 void Drawer::DrawGraphic(Graphic* graphic, Transform* transform) {
   for (shared_ptr<Shape> shape : graphic->shapes) {
     switch (shape->type) {
     case Shape::TypePoint: {
       shared_ptr<ShapePoint> type_shape = static_pointer_cast<ShapePoint>(shape);
-      type_shape->p = Mul(*transform, type_shape->p);
+      if (transform) {
+        Point p = Mul(*transform, type_shape->p);
+        DrawPoint(type_shape->size, &p, &graphic->color);
+      } else {
+        DrawPoint(type_shape->size, &type_shape->p, &graphic->color);
+      }
     } break;
     case Shape::TypeSegment: {
       shared_ptr<ShapeSegment> type_shape = static_pointer_cast<ShapeSegment>(shape);
-      type_shape->o = Mul(*transform, type_shape->o);
-      type_shape->t = Mul(*transform, type_shape->t);
+      if (transform) {
+        Point o = Mul(*transform, type_shape->o);
+        Point t = Mul(*transform, type_shape->t);
+        DrawSegment(&o, &t, &graphic->color);
+      } else {
+        DrawSegment(&type_shape->o, &type_shape->t, &graphic->color);
+      }
     } break;
     case Shape::TypePolygon: {
       shared_ptr<ShapePolygon> type_shape = static_pointer_cast<ShapePolygon>(shape);
-      for (size_t i = 0; i < type_shape->vertexes.size(); i++) {
-        type_shape->vertexes[i] = Mul(*transform, type_shape->vertexes[i]);
+      if (transform) {
+        vector<Point> vertexes = type_shape->vertexes;
+        for (size_t i = 0; i < vertexes.size(); i++) {
+          vertexes[i] = Mul(*transform, vertexes[i]);
+        }
+        if (type_shape->is_solid) {
+          DrawSolidPolygon(vertexes.data(), vertexes.size(), &graphic->fillcolor);
+        } else {
+          DrawPolygon(vertexes.data(), vertexes.size(), &graphic->color);
+        }
+      } else {
+        if (type_shape->is_solid) {
+          DrawSolidPolygon(type_shape->vertexes.data(), type_shape->vertexes.size(), &graphic->fillcolor);
+        } else {
+          DrawPolygon(type_shape->vertexes.data(), type_shape->vertexes.size(), &graphic->color);
+        }
       }
     } break;
     case Shape::TypeCircle: {
       shared_ptr<ShapeCircle> type_shape = static_pointer_cast<ShapeCircle>(shape);
-      type_shape->center = Mul(*transform, type_shape->center);
+      if (transform) {
+        Point center = Mul(*transform, type_shape->center);
+        if (type_shape->is_solid) {
+          DrawSolidCircle(&center, type_shape->radius, nullptr, &graphic->fillcolor);
+        } else {
+          DrawCircle(&center, type_shape->radius, &graphic->color);
+        }
+      } else {
+        if (type_shape->is_solid) {
+          DrawSolidCircle(&type_shape->center, type_shape->radius, nullptr, &graphic->fillcolor);
+        } else {
+          DrawCircle(&type_shape->center, type_shape->radius, &graphic->color);
+        }
+      }
     } break;
     }
   }
-  DrawGraphic(graphic);
 }
 
 void Drawer::Flush() { 
