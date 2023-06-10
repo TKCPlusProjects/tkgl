@@ -25,6 +25,7 @@ public:
   void DrawSolidCircle(Point* center, float radius, Point* axis, Color* color);
   
   void DrawGraphic(Graphic* graphic);
+  void DrawGraphic(Graphic* graphic, Transform* transform);
 
   void Flush();
 };

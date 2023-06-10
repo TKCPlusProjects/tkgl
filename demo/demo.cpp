@@ -74,13 +74,15 @@ int main() {
     // graphic_solid->Write();
   }
 
+  Transform transform(Point(), Rotation(0.02f));
+
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    drawer->DrawGraphic(graphic.get());
-    drawer->DrawGraphic(graphic_solid.get());
+    drawer->DrawGraphic(graphic.get(), &transform);
+    drawer->DrawGraphic(graphic_solid.get(), &transform);
 
     drawer->Flush();
 

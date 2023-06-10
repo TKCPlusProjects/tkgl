@@ -95,6 +95,33 @@ void Drawer::DrawGraphic(Graphic* graphic) {
   }
 }
 
+void Drawer::DrawGraphic(Graphic* graphic, Transform* transform) {
+  for (shared_ptr<Shape> shape : graphic->shapes) {
+    switch (shape->type) {
+    case Shape::TypePoint: {
+      shared_ptr<ShapePoint> type_shape = static_pointer_cast<ShapePoint>(shape);
+      type_shape->p = Mul(*transform, type_shape->p);
+    } break;
+    case Shape::TypeSegment: {
+      shared_ptr<ShapeSegment> type_shape = static_pointer_cast<ShapeSegment>(shape);
+      type_shape->o = Mul(*transform, type_shape->o);
+      type_shape->t = Mul(*transform, type_shape->t);
+    } break;
+    case Shape::TypePolygon: {
+      shared_ptr<ShapePolygon> type_shape = static_pointer_cast<ShapePolygon>(shape);
+      for (size_t i = 0; i < type_shape->vertexes.size(); i++) {
+        type_shape->vertexes[i] = Mul(*transform, type_shape->vertexes[i]);
+      }
+    } break;
+    case Shape::TypeCircle: {
+      shared_ptr<ShapeCircle> type_shape = static_pointer_cast<ShapeCircle>(shape);
+      type_shape->center = Mul(*transform, type_shape->center);
+    } break;
+    }
+  }
+  DrawGraphic(graphic);
+}
+
 void Drawer::Flush() { 
   point->Flush();
   line->Flush();
