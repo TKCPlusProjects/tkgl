@@ -11,31 +11,26 @@ Drawer::Drawer(shared_ptr<Camera> camera, float depth) {
 void Drawer::DrawPoint(float size, Point* p, Color* color) {
   point->Push(size, p, color);
 }
-
 void Drawer::DrawSegment(Point* po, Point* pt, Color* color) {
   line->Push(po, color);
   line->Push(pt, color);
 }
-
-void Drawer::DrawPolygon(vector<Point> vertexes, Color* color) {
-  Point po = vertexes.back();
-  for (int i = 0; i < vertexes.size(); ++i) {
-    Point pt = vertexes[i];
-    line->Push(&po, color);
-    line->Push(&pt, color);
+void Drawer::DrawPolygon(Point* vertex, int count, Color* color) {
+  Point po = vertex[count - 1];
+  for (int i = 0; i < count; ++i) {
+    Point pt = vertex[i];
+    DrawSegment(&po, &pt, color);
     po = pt;
   }
 }
-
-void Drawer::DrawSolidPolygon(vector<Point> vertexes, Color* color) {
-  for (int i = 1; i < vertexes.size() - 1; ++i) {
-    triangle->Push(&vertexes[0], color);
-    triangle->Push(&vertexes[i], color);
-    triangle->Push(&vertexes[i + 1], color);
+void Drawer::DrawSolidPolygon(Point* vertex, int count, Color* color) {
+  for (int i = 1; i < count - 1; ++i) {
+    triangle->Push(&vertex[0], color);
+    triangle->Push(&vertex[i], color);
+    triangle->Push(&vertex[i + 1], color);
   }
-  DrawPolygon(vertexes, color);
+  DrawPolygon(vertex, count, color);
 }
-
 void Drawer::DrawCircle(Point* center, float radius, Color* color) {
   Point ro(1.0f, 0.0f);
   Point vo = *center + radius * ro;
@@ -48,7 +43,6 @@ void Drawer::DrawCircle(Point* center, float radius, Color* color) {
     vo = vt;
   }
 }
-
 void Drawer::DrawSolidCircle(Point* center, float radius, Point* axis, Color* color) {
   Point ro(kCosInc, kSinInc);
   Point vo = *center + radius * ro;
@@ -84,9 +78,9 @@ void Drawer::DrawGraphic(Graphic* graphic) {
     case Shape::TypePolygon: {
       shared_ptr<ShapePolygon> type_shape = static_pointer_cast<ShapePolygon>(shape);
       if (type_shape->is_solid) {
-        DrawSolidPolygon(type_shape->vertexes, &graphic->fillcolor);
+        DrawSolidPolygon(type_shape->vertexes.data(), type_shape->vertexes.size(), &graphic->fillcolor);
       } else {
-        DrawPolygon(type_shape->vertexes, &graphic->color);
+        DrawPolygon(type_shape->vertexes.data(), type_shape->vertexes.size(), &graphic->color);
       }
     } break;
     case Shape::TypeCircle: {

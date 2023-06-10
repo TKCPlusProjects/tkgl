@@ -19,10 +19,11 @@ public:
   
   void DrawPoint(float size, Point* p, Color* color);
   void DrawSegment(Point* p1, Point* p2, Color* color);
-  void DrawPolygon(vector<Point> vertexes, Color* color);
-  void DrawSolidPolygon(vector<Point> vertexes, Color* color);
+  void DrawPolygon(Point* vertex, int count, Color* color);
+  void DrawSolidPolygon(Point* vertex, int count, Color* color);
   void DrawCircle(Point* center, float radius, Color* color);
   void DrawSolidCircle(Point* center, float radius, Point* axis, Color* color);
+  
   void DrawGraphic(Graphic* graphic);
 
   void Flush();
