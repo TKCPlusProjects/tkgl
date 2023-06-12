@@ -11,15 +11,24 @@ Drawer::Drawer(shared_ptr<Camera> camera, float depth) {
 void Drawer::DrawPoint(float size, Point* p, Color* color) {
   point->Push(size, p, color);
 }
-void Drawer::DrawSegment(Point* po, Point* pt, Color* color) {
-  line->Push(po, color);
-  line->Push(pt, color);
+void Drawer::DrawSegment(Point* vertex, int count, Color* color) {
+  for (int i = 0; i < count - 1; ++i) {
+    line->Push(&vertex[i], color);
+    line->Push(&vertex[++i], color);
+  }
+}
+void Drawer::DrawContinueSegment(Point* vertex, int count, Color* color) {
+  for (int i = 0; i < count - 1;) {
+    line->Push(&vertex[i], color);
+    line->Push(&vertex[++i], color);
+  }
 }
 void Drawer::DrawPolygon(Point* vertex, int count, Color* color) {
   Point po = vertex[count - 1];
   for (int i = 0; i < count; ++i) {
     Point pt = vertex[i];
-    DrawSegment(&po, &pt, color);
+    line->Push(&po, color);
+    line->Push(&pt, color);
     po = pt;
   }
 }
@@ -79,12 +88,23 @@ void Drawer::DrawGraphic(Graphic* graphic, Transform* transform) {
     case Shape::TypeSegment: {
       shared_ptr<ShapeSegment> type_shape = static_pointer_cast<ShapeSegment>(shape);
       if (transform) {
-        Point o = Mul(*transform, type_shape->o);
-        Point t = Mul(*transform, type_shape->t);
-        DrawSegment(&o, &t, &graphic->color);
+        vector<Point> vertexes = type_shape->vertexes;
+        for (size_t i = 0; i < vertexes.size(); i++) {
+          vertexes[i] = Mul(*transform, vertexes[i]);
+        }
+        if (type_shape->is_continue) {
+          DrawContinueSegment(vertexes.data(), vertexes.size(), &graphic->color);
+        } else {
+          DrawSegment(vertexes.data(), vertexes.size(), &graphic->color);
+        }
       } else {
-        DrawSegment(&type_shape->o, &type_shape->t, &graphic->color);
+        if (type_shape->is_continue) {
+          DrawContinueSegment(type_shape->vertexes.data(), type_shape->vertexes.size(), &graphic->color);
+        } else {
+          DrawSegment(type_shape->vertexes.data(), type_shape->vertexes.size(), &graphic->color);
+        }
       }
+
     } break;
     case Shape::TypePolygon: {
       shared_ptr<ShapePolygon> type_shape = static_pointer_cast<ShapePolygon>(shape);

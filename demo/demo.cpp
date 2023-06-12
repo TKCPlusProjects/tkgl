@@ -44,17 +44,22 @@ int main() {
   if (filesystem::exists(graphic->path)) {
     graphic->Read();
   } else {
-    // graphic->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
-    // graphic->shapes.push_back(make_shared<ShapePoint>(10.0f, Point(0.0f, 0.0f)));
-    // graphic->shapes.push_back(make_shared<ShapeSegment>(Point(0.0f, -10.0f), Point(0.0f,  10.0f)));
-    // graphic->shapes.push_back(make_shared<ShapePolygon>(vector<Point>{
-    //   Point(-1.0f,  1.0f),
-    //   Point( 1.0f,  1.0f),
-    //   Point( 1.0f, -1.0f),
-    //   Point(-1.0f, -1.0f),
-    // }));
-    // graphic->shapes.push_back(make_shared<ShapeCircle>(Point(0.0f, 0.0f), 1.0f));
-    // graphic->Write();
+    graphic->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
+    graphic->shapes.push_back(make_shared<ShapePoint>(10.0f, Point(0.0f, 0.0f)));
+    graphic->shapes.push_back(make_shared<ShapeSegment>(vector<Point>{
+      Point(0.0f, -10.0f), 
+      Point(0.0f,  10.0f),
+      Point(-10.0f, 0.0f),
+      Point( 10.0f, 0.0f),
+    }));
+    graphic->shapes.push_back(make_shared<ShapePolygon>(vector<Point>{
+      Point(-1.0f,  1.0f),
+      Point( 1.0f,  1.0f),
+      Point( 1.0f, -1.0f),
+      Point(-1.0f, -1.0f),
+    }));
+    graphic->shapes.push_back(make_shared<ShapeCircle>(Point(0.0f, 0.0f), 1.0f));
+    graphic->Write();
   }
 
   shared_ptr<Graphic> graphic_solid = make_shared<Graphic>();
@@ -62,19 +67,19 @@ int main() {
   if (filesystem::exists(graphic_solid->path)) {
     graphic_solid->Read();
   } else {
-    // graphic_solid->color = Color(0.0f, 1.0f, 0.0f, 1.0f);
-    // graphic_solid->fillcolor = Color(0.0f, 0.5f, 0.0f, 0.5f);
-    // graphic_solid->shapes.push_back(make_shared<ShapePolygon>(vector<Point>{
-    //   Point(-1.0f,  1.0f + 5.0f),
-    //   Point( 1.0f,  1.0f + 5.0f),
-    //   Point( 1.0f, -1.0f + 5.0f),
-    //   Point(-1.0f, -1.0f + 5.0f),
-    // }, true));
-    // graphic_solid->shapes.push_back(make_shared<ShapeCircle>(Point(0.0f, -5.0f), 1.0f, true));
-    // graphic_solid->Write();
+    graphic_solid->color = Color(0.0f, 1.0f, 0.0f, 1.0f);
+    graphic_solid->fillcolor = Color(0.0f, 0.5f, 0.0f, 0.5f);
+    graphic_solid->shapes.push_back(make_shared<ShapePolygon>(vector<Point>{
+      Point(-1.0f,  1.0f + 5.0f),
+      Point( 1.0f,  1.0f + 5.0f),
+      Point( 1.0f, -1.0f + 5.0f),
+      Point(-1.0f, -1.0f + 5.0f),
+    }, true));
+    graphic_solid->shapes.push_back(make_shared<ShapeCircle>(Point(0.0f, -5.0f), 1.0f, true));
+    graphic_solid->Write();
   }
 
-  Transform transform(Point(10.0f, 0.0f), Rotation());
+  Transform transform(Point(5.0f, 0.0f), Rotation());
 
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();

@@ -33,10 +33,11 @@ public:
 };
 class ShapeSegment : public Shape {
 public:
-  Point o, t;
+  vector<Point> vertexes;
+  bool is_continue;
 
   ShapeSegment() : Shape(TypeSegment) {}
-  ShapeSegment(Point o, Point t) : Shape(TypeSegment), o(o), t(t) {}
+  ShapeSegment(vector<Point> vertexes, bool is_continue = false) : Shape(TypeSegment), vertexes(vertexes), is_continue(is_continue) {}
 
   void Write(ofstream* file) override;
   void Read(ifstream* file) override;

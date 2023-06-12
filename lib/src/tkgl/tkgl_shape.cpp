@@ -14,16 +14,27 @@ void ShapePoint::Read(ifstream* file) {
 }
 
 void ShapeSegment::Write(ofstream* file) {
-  file->write((char*)&o.x, sizeof(float));
-  file->write((char*)&o.y, sizeof(float));
-  file->write((char*)&t.x, sizeof(float));
-  file->write((char*)&t.y, sizeof(float));
+  int count = (int)vertexes.size();
+  file->write((char*)&count, sizeof(int));
+  for (size_t i = 0; i < count; i++) {
+    Point vertex = vertexes[i];
+    file->write((char*)&vertex.x, sizeof(float));
+    file->write((char*)&vertex.y, sizeof(float));
+  }
+  file->write((char*)&is_continue, sizeof(bool));
 }
 void ShapeSegment::Read(ifstream* file) {
-  file->read((char*)&o.x, sizeof(float));
-  file->read((char*)&o.y, sizeof(float));
-  file->read((char*)&t.x, sizeof(float));
-  file->read((char*)&t.y, sizeof(float));
+  vertexes.clear();
+
+  int count;
+  file->read((char*)&count, sizeof(int));
+  for (size_t i = 0; i < count; i++) {
+      Point vertex;
+      file->read((char*)&vertex.x, sizeof(float));
+      file->read((char*)&vertex.y, sizeof(float));
+      vertexes.push_back(vertex);
+  }
+  file->read((char*)&is_continue, sizeof(bool));
 }
 
 void ShapePolygon::Write(ofstream* file) {

@@ -18,7 +18,8 @@ public:
   Drawer(shared_ptr<Camera> camera, float depth);
   
   void DrawPoint(float size, Point* p, Color* color);
-  void DrawSegment(Point* p1, Point* p2, Color* color);
+  void DrawSegment(Point* vertex, int count, Color* color);
+  void DrawContinueSegment(Point* vertex, int count, Color* color);
   void DrawPolygon(Point* vertex, int count, Color* color);
   void DrawSolidPolygon(Point* vertex, int count, Color* color);
   void DrawCircle(Point* center, float radius, Color* color);
