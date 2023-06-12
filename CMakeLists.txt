@@ -6,7 +6,7 @@ set(CMAKE_TOOLCHAIN_FILE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
 # 配置项目信息
 project(
   tkgl # 项目名，会被保存到 PROJECT_NAME 变量
-  VERSION 0.1.15 # 项目版本号（库版本）
+  VERSION 0.1.16 # 项目版本号（库版本）
   LANGUAGES CXX # 项目开发语言
 )
 
