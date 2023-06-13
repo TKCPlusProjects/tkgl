@@ -8,10 +8,13 @@ namespace tkht {
 namespace tkgl {
 class Graphic {
 public:
-  const char* path;
+  char* path = nullptr;
   Color color;
   Color fillcolor;
   vector<shared_ptr<Shape>> shapes;
+
+  ~Graphic();
+  Graphic();
   
   void Write();
   void Read();

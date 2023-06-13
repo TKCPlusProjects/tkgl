@@ -2,6 +2,16 @@
 
 namespace tkht {
 namespace tkgl {
+Graphic::~Graphic() {
+  if (path) {
+    free(path);
+    path = nullptr;
+  }
+}
+Graphic::Graphic() {
+  
+}
+
 void Graphic::Write() {
   ofstream file(path, ios::binary);
   if (!file.is_open()) {

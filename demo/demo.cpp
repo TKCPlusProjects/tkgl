@@ -40,7 +40,7 @@ int main() {
   shared_ptr<Drawer> drawer = make_shared<Drawer>(camera, 0.0f);
   
   shared_ptr<Graphic> graphic = make_shared<Graphic>();
-  graphic->path = "a1.tkgp";
+  graphic->path = strdup("a1.tkgp");
   if (filesystem::exists(graphic->path)) {
     graphic->Read();
   } else {
@@ -63,7 +63,7 @@ int main() {
   }
 
   shared_ptr<Graphic> graphic_solid = make_shared<Graphic>();
-  graphic_solid->path = "b1.tkgp";
+  graphic_solid->path = strdup("b1.tkgp");
   if (filesystem::exists(graphic_solid->path)) {
     graphic_solid->Read();
   } else {
