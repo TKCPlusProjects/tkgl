@@ -23,10 +23,10 @@ public:
 class ShapePoint : public Shape {
 public:
   float size;
-  Point p;
+  vector<Point> vertexes;
 
   ShapePoint() : Shape(TypePoint) {}
-  ShapePoint(float size, Point p) : Shape(TypePoint), size(size), p(p) {}
+  ShapePoint(float size, vector<Point> vertexes) : Shape(TypePoint), size(size), vertexes(vertexes) {}
 
   void Write(ofstream* file) override;
   void Read(ifstream* file) override;

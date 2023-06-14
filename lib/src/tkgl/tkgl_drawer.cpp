@@ -8,8 +8,10 @@ Drawer::Drawer(shared_ptr<Camera> camera, float depth) {
   triangle = make_shared<RendererTriangle>(camera, depth);
 }
 
-void Drawer::DrawPoint(float size, Point* p, Color* color) {
-  point->Push(size, p, color);
+void Drawer::DrawPoint(float size, Point* vertex, int count, Color* color) {
+  for (int i = 0; i < count; ++i) {
+    point->Push(size, &vertex[i], color);
+  }
 }
 void Drawer::DrawSegment(Point* vertex, int count, Color* color) {
   for (int i = 0; i < count - 1; ++i) {
@@ -79,10 +81,13 @@ void Drawer::DrawGraphic(Graphic* graphic, Transform* transform) {
     case Shape::TypePoint: {
       shared_ptr<ShapePoint> type_shape = static_pointer_cast<ShapePoint>(shape);
       if (transform) {
-        Point p = Mul(*transform, type_shape->p);
-        DrawPoint(type_shape->size, &p, &graphic->color);
+        vector<Point> vertexes = type_shape->vertexes;
+        for (size_t i = 0; i < vertexes.size(); i++) {
+          vertexes[i] = Mul(*transform, vertexes[i]);
+        }
+        DrawPoint(type_shape->size, vertexes.data(), vertexes.size(), &graphic->color);
       } else {
-        DrawPoint(type_shape->size, &type_shape->p, &graphic->color);
+        DrawPoint(type_shape->size, type_shape->vertexes.data(), type_shape->vertexes.size(), &graphic->color);
       }
     } break;
     case Shape::TypeSegment: {

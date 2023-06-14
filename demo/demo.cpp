@@ -45,7 +45,11 @@ int main() {
     graphic->Read();
   } else {
     graphic->color = Color(1.0f, 0.0f, 0.0f, 1.0f);
-    graphic->shapes.push_back(make_shared<ShapePoint>(10.0f, Point(0.0f, 0.0f)));
+    graphic->shapes.push_back(make_shared<ShapePoint>(10.0f, vector<Point>{
+      Point(0.0f,  0.0f),
+      Point(0.0f,  1.0f),
+      Point(0.0f, -1.0f),
+    }));
     graphic->shapes.push_back(make_shared<ShapeSegment>(vector<Point>{
       Point(0.0f, -10.0f), 
       Point(0.0f,  10.0f),

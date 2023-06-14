@@ -4,13 +4,25 @@ namespace tkht {
 namespace tkgl {
 void ShapePoint::Write(ofstream* file) {
   file->write((char*)&size, sizeof(float));
-  file->write((char*)&p.x, sizeof(float));
-  file->write((char*)&p.y, sizeof(float));
+  int count = (int)vertexes.size();
+  file->write((char*)&count, sizeof(int));
+  for (size_t i = 0; i < count; i++) {
+    Point vertex = vertexes[i];
+    file->write((char*)&vertex.x, sizeof(float));
+    file->write((char*)&vertex.y, sizeof(float));
+  }
 }
 void ShapePoint::Read(ifstream* file) {
   file->read((char*)&size, sizeof(float));
-  file->read((char*)&p.x, sizeof(float));
-  file->read((char*)&p.y, sizeof(float));
+  int count;
+  file->read((char*)&count, sizeof(int));
+  vertexes.clear();
+  for (size_t i = 0; i < count; i++) {
+      Point vertex;
+      file->read((char*)&vertex.x, sizeof(float));
+      file->read((char*)&vertex.y, sizeof(float));
+      vertexes.push_back(vertex);
+  }
 }
 
 void ShapeSegment::Write(ofstream* file) {
@@ -24,10 +36,9 @@ void ShapeSegment::Write(ofstream* file) {
   file->write((char*)&is_continue, sizeof(bool));
 }
 void ShapeSegment::Read(ifstream* file) {
-  vertexes.clear();
-
   int count;
   file->read((char*)&count, sizeof(int));
+  vertexes.clear();
   for (size_t i = 0; i < count; i++) {
       Point vertex;
       file->read((char*)&vertex.x, sizeof(float));
@@ -48,10 +59,9 @@ void ShapePolygon::Write(ofstream* file) {
   file->write((char*)&is_solid, sizeof(bool));
 }
 void ShapePolygon::Read(ifstream* file) {
-  vertexes.clear();
-
   int count;
   file->read((char*)&count, sizeof(int));
+  vertexes.clear();
   for (size_t i = 0; i < count; i++) {
       Point vertex;
       file->read((char*)&vertex.x, sizeof(float));
