@@ -56,11 +56,16 @@ public:
 class ShapeCircle : public Shape {
 public:
   Point center;
+  Point p;
   float r;
   bool is_solid;
 
   ShapeCircle() : Shape(TypeCircle) {}
   ShapeCircle(Point center, float r, bool is_solid = false) : Shape(TypeCircle), center(center), p(Point(center.x + r, center.y)), r(r), is_solid(is_solid) {}
+  ShapeCircle(Point center, Point p, bool is_solid = false) : Shape(TypeCircle), center(center), p(p), r(Distance(center, p)), is_solid(is_solid) {}
+
+  void SetP(Point* p);
+  void SetR(float r);
 
   void Write(ofstream* file) override;
   void Read(ifstream* file) override;

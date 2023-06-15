@@ -71,6 +71,15 @@ void ShapePolygon::Read(ifstream* file) {
   file->read((char*)&is_solid, sizeof(bool));
 }
 
+void ShapeCircle::SetP(Point* p) {
+  this->p = *p;
+  r = Distance(center, *p);
+}
+void ShapeCircle::SetR(float r) {
+  this->r = r;
+  p *= (r / p.Length());
+}
+
 void ShapeCircle::Write(ofstream* file) {
   file->write((char*)&center.x, sizeof(float));
   file->write((char*)&center.y, sizeof(float));

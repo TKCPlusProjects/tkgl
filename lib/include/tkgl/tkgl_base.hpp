@@ -28,6 +28,12 @@ struct Point {
   float x, y;
   Point() : x(0.0f), y(0.0f) {}
   Point(float x, float y) : x(x), y(y) {}
+
+  void operator += (const Point& v) { x += v.x; y += v.y; }
+  void operator -= (const Point& v) { x -= v.x; y -= v.y; }
+  void operator *= (float a) { x *= a; y *= a; }
+
+  float Length() const { return sqrtf(x * x + y * y); }
 };
 struct Rotation {
   float s, c;
@@ -53,6 +59,7 @@ inline Point operator + (const Point& a, const Point& b) { return Point(a.x + b.
 inline Point operator - (const Point& a, const Point& b) { return Point(a.x - b.x, a.y - b.y); }
 inline Point operator * (float s, const Point& a) { return Point(s * a.x, s * a.y); }
 inline Point Mul(const Transform& t, const Point& p) { return Point((t.q.c * p.x - t.q.s * p.y) + t.p.x, (t.q.s * p.x + t.q.c * p.y) + t.p.y); }
+inline float Distance(const Point& a, const Point& b) { return (a - b).Length(); }
 } // namespace tkgl
 } // namespace tkht
 
