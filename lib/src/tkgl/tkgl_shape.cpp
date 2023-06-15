@@ -74,13 +74,13 @@ void ShapePolygon::Read(ifstream* file) {
 void ShapeCircle::Write(ofstream* file) {
   file->write((char*)&center.x, sizeof(float));
   file->write((char*)&center.y, sizeof(float));
-  file->write((char*)&radius, sizeof(float));
+  file->write((char*)&r, sizeof(float));
   file->write((char*)&is_solid, sizeof(bool));
 }
 void ShapeCircle::Read(ifstream* file) {
   file->read((char*)&center.x, sizeof(float));
   file->read((char*)&center.y, sizeof(float));
-  file->read((char*)&radius, sizeof(float));
+  file->read((char*)&r, sizeof(float));
   file->read((char*)&is_solid, sizeof(bool));
 }
 } // namespace tkgl

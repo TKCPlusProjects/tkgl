@@ -42,24 +42,24 @@ void Drawer::DrawSolidPolygon(Point* vertex, int count, Color* color) {
   }
   DrawPolygon(vertex, count, color);
 }
-void Drawer::DrawCircle(Point* center, float radius, Color* color) {
+void Drawer::DrawCircle(Point* center, float r, Color* color) {
   Point ro(1.0f, 0.0f);
-  Point vo = *center + radius * ro;
+  Point vo = *center + r * ro;
   for (int i = 0; i < kCircleSegments; ++i) {
     Point rt(kCosInc * ro.x - kSinInc * ro.y, kSinInc * ro.x + kCosInc * ro.y);
-    Point vt = *center + radius * rt;
+    Point vt = *center + r * rt;
     line->Push(&vo, color);
     line->Push(&vt, color);
     ro = rt;
     vo = vt;
   }
 }
-void Drawer::DrawSolidCircle(Point* center, float radius, Point* axis, Color* color) {
+void Drawer::DrawSolidCircle(Point* center, float r, Point* axis, Color* color) {
   Point ro(kCosInc, kSinInc);
-  Point vo = *center + radius * ro;
+  Point vo = *center + r * ro;
   for (int i = 0; i < kCircleSegments; ++i) {
     Point rt(kCosInc * ro.x - kSinInc * ro.y, kSinInc * ro.x + kCosInc * ro.y);
-    Point vt = *center + radius * rt;
+    Point vt = *center + r * rt;
     triangle->Push(center, color);
     triangle->Push(&vo, color);
     triangle->Push(&vt, color);
@@ -68,11 +68,11 @@ void Drawer::DrawSolidCircle(Point* center, float radius, Point* axis, Color* co
   }
 
   Point p = *center;
-  if (axis) p = p + radius * *axis;
+  if (axis) p = p + r * *axis;
   line->Push(center, color);
   line->Push(&p, color);
 
-  DrawCircle(center, radius, color);
+  DrawCircle(center, r, color);
 }
 
 void Drawer::DrawGraphic(Graphic* graphic, Transform* transform) {
@@ -136,15 +136,15 @@ void Drawer::DrawGraphic(Graphic* graphic, Transform* transform) {
       if (transform) {
         Point center = Mul(*transform, type_shape->center);
         if (type_shape->is_solid) {
-          DrawSolidCircle(&center, type_shape->radius, nullptr, &graphic->fillcolor);
+          DrawSolidCircle(&center, type_shape->r, nullptr, &graphic->fillcolor);
         } else {
-          DrawCircle(&center, type_shape->radius, &graphic->color);
+          DrawCircle(&center, type_shape->r, &graphic->color);
         }
       } else {
         if (type_shape->is_solid) {
-          DrawSolidCircle(&type_shape->center, type_shape->radius, nullptr, &graphic->fillcolor);
+          DrawSolidCircle(&type_shape->center, type_shape->r, nullptr, &graphic->fillcolor);
         } else {
-          DrawCircle(&type_shape->center, type_shape->radius, &graphic->color);
+          DrawCircle(&type_shape->center, type_shape->r, &graphic->color);
         }
       }
     } break;

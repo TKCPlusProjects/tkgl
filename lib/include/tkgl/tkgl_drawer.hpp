@@ -22,8 +22,8 @@ public:
   void DrawContinueSegment(Point* vertex, int count, Color* color);
   void DrawPolygon(Point* vertex, int count, Color* color);
   void DrawSolidPolygon(Point* vertex, int count, Color* color);
-  void DrawCircle(Point* center, float radius, Color* color);
-  void DrawSolidCircle(Point* center, float radius, Point* axis, Color* color);
+  void DrawCircle(Point* center, float r, Color* color);
+  void DrawSolidCircle(Point* center, float r, Point* axis, Color* color);
   
   void DrawGraphic(Graphic* graphic, Transform* transform = nullptr);
 

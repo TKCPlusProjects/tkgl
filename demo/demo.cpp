@@ -62,7 +62,7 @@ int main() {
       Point( 1.0f, -1.0f),
       Point(-1.0f, -1.0f),
     }));
-    graphic->shapes.push_back(make_shared<ShapeCircle>(Point(0.0f, 0.0f), 1.0f));
+    graphic->shapes.push_back(make_shared<ShapeCircle>(Point(0.0f, 0.0f), Point(1.0f, 1.0f)));
     graphic->Write();
   }
 
