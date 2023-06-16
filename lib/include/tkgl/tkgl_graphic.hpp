@@ -3,6 +3,10 @@
 
 #include <tkgl/tkgl_base.hpp>
 #include <tkgl/tkgl_shape.hpp>
+#include <tkgl/tkgl_shape_point.hpp>
+#include <tkgl/tkgl_shape_segment.hpp>
+#include <tkgl/tkgl_shape_polygon.hpp>
+#include <tkgl/tkgl_shape_circle.hpp>
 
 namespace tkht {
 namespace tkgl {
