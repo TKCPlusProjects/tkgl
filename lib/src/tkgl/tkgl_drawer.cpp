@@ -8,9 +8,9 @@ Drawer::Drawer(shared_ptr<Camera> camera, float depth) {
   triangle = make_shared<RendererTriangle>(camera, depth);
 }
 
-void Drawer::DrawPoint(float size, Point* vertex, int count, Color* color) {
+void Drawer::DrawPoint(float wide, Point* vertex, int count, Color* color) {
   for (int i = 0; i < count; ++i) {
-    point->Push(size, &vertex[i], color);
+    point->Push(wide, &vertex[i], color);
   }
 }
 void Drawer::DrawSegment(Point* vertex, int count, Color* color) {
@@ -85,9 +85,9 @@ void Drawer::DrawGraphic(Graphic* graphic, Transform* transform) {
         for (size_t i = 0; i < vertexes.size(); i++) {
           vertexes[i] = Mul(*transform, vertexes[i]);
         }
-        DrawPoint(type_shape->size, vertexes.data(), vertexes.size(), &graphic->color);
+        DrawPoint(type_shape->wide, vertexes.data(), vertexes.size(), &graphic->color);
       } else {
-        DrawPoint(type_shape->size, type_shape->vertexes.data(), type_shape->vertexes.size(), &graphic->color);
+        DrawPoint(type_shape->wide, type_shape->vertexes.data(), type_shape->vertexes.size(), &graphic->color);
       }
     } break;
     case Shape::TypeSegment: {
@@ -136,15 +136,15 @@ void Drawer::DrawGraphic(Graphic* graphic, Transform* transform) {
       if (transform) {
         Point center = Mul(*transform, type_shape->center);
         if (type_shape->is_solid) {
-          DrawSolidCircle(&center, type_shape->r, nullptr, &graphic->fillcolor);
+          DrawSolidCircle(&center, type_shape->radius, nullptr, &graphic->fillcolor);
         } else {
-          DrawCircle(&center, type_shape->r, &graphic->color);
+          DrawCircle(&center, type_shape->radius, &graphic->color);
         }
       } else {
         if (type_shape->is_solid) {
-          DrawSolidCircle(&type_shape->center, type_shape->r, nullptr, &graphic->fillcolor);
+          DrawSolidCircle(&type_shape->center, type_shape->radius, nullptr, &graphic->fillcolor);
         } else {
-          DrawCircle(&type_shape->center, type_shape->r, &graphic->color);
+          DrawCircle(&type_shape->center, type_shape->radius, &graphic->color);
         }
       }
     } break;

@@ -33,9 +33,9 @@ public:
               const void *data);
   void Generate(int dat_seg_len);
 
-  void Push(const float size, const float x, const float y,
+  void Push(const float wide, const float x, const float y,
             const float r, const float g, const float b, const float a);
-  void Push(const float size, Point* point, Color* color);
+  void Push(const float wide, Point* point, Color* color);
   
   void BufferSub(unsigned int buffer, int size, const void *data);
   void Flush(const float *matrix);

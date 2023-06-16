@@ -20,9 +20,9 @@ public:
   /// @param dat_seg_len 每一个图形的点的个数
   Renderer(shared_ptr<Camera> camera, float depth, int dat_seg_len);
 
-  void Push(float size, float x, float y,
+  void Push(float wide, float x, float y,
             float r, float g, float b, float a);
-  void Push(float size, Point* point, Color* color);
+  void Push(float wide, Point* point, Color* color);
   void Push(Point* point, Color* color);
   void Flush();
 

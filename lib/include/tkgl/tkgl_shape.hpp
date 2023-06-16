@@ -22,11 +22,11 @@ public:
 };
 class ShapePoint : public Shape {
 public:
-  float size;
+  float wide;
   vector<Point> vertexes;
 
   ShapePoint() : Shape(TypePoint) {}
-  ShapePoint(float size, vector<Point> vertexes) : Shape(TypePoint), size(size), vertexes(vertexes) {}
+  ShapePoint(float wide, vector<Point> vertexes) : Shape(TypePoint), wide(wide), vertexes(vertexes) {}
 
   void Write(ofstream* file) override;
   void Read(ifstream* file) override;
@@ -54,18 +54,22 @@ public:
   void Read(ifstream* file) override;
 };
 class ShapeCircle : public Shape {
+protected:
+  Point vector;
 public:
+  float radius;
   Point center;
-  Point p;
-  float r;
+  Point point;
   bool is_solid;
 
   ShapeCircle() : Shape(TypeCircle) {}
-  ShapeCircle(Point center, float r, bool is_solid = false) : Shape(TypeCircle), center(center), p(Point(center.x + r, center.y)), r(r), is_solid(is_solid) {}
-  ShapeCircle(Point center, Point p, bool is_solid = false) : Shape(TypeCircle), center(center), p(p), r(Distance(center, p)), is_solid(is_solid) {}
+  ShapeCircle(float radius, Point center, Point point, bool is_solid = false) : Shape(TypeCircle), radius(radius), center(center), point(point), is_solid(is_solid), vector(Distance(center, point) == 0 ? Point(1, 0) : (point - center)) {}
+  ShapeCircle(float radius, Point center, bool is_solid = false) : ShapeCircle(radius, center, Point(center.x + radius, center.y), is_solid) {}
+  ShapeCircle(Point center, Point point, bool is_solid = false) : ShapeCircle(Distance(center, point), center, point, is_solid) {}
 
-  void SetP(Point* p);
-  void SetR(float r);
+  void SetRadius(float radius);
+  void SetCenter(Point* center);
+  void SetPoint(Point* point);
 
   void Write(ofstream* file) override;
   void Read(ifstream* file) override;

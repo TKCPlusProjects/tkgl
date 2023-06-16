@@ -119,10 +119,10 @@ void Shader::Generate(int dat_seg_len) {
   Buffer(buffers[color_idx], color_idx, 4, 4 * size * sizeof(float), color_dat);
 }
 
-void Shader::Push(const float size, const float x, const float y,
+void Shader::Push(const float wide, const float x, const float y,
                   const float r, const float g, const float b,
                   const float a) {
-  size_dat[1 * count + 0] = size;
+  size_dat[1 * count + 0] = wide;
 
   vertex_dat[2 * count + 0] = x;
   vertex_dat[2 * count + 1] = y;
@@ -134,8 +134,8 @@ void Shader::Push(const float size, const float x, const float y,
 
   ++count;
 }
-void Shader::Push(const float size, Point* point, Color* color) {
-  Push(size, point->x, point->y, color->r, color->g, color->b, color->a);
+void Shader::Push(const float wide, Point* point, Color* color) {
+  Push(wide, point->x, point->y, color->r, color->g, color->b, color->a);
 }
 
 void Shader::BufferSub(unsigned int buffer, int size, const void *data) {
