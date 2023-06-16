@@ -18,9 +18,9 @@ public:
   ShapeCircle(float radius, Point center, bool is_solid = false);
   ShapeCircle(Point center, Point point, bool is_solid = false);
 
+  void CalVector();
   void CalRadius();
   void CalPoint();
-  void CalVector();
   void SetRadius(float radius);
   void SetCenter(Point* center);
   void SetPoint(Point* point);

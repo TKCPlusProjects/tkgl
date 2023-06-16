@@ -4,22 +4,22 @@ namespace tkht {
 namespace tkgl {
 ShapeCircle::ShapeCircle() : Shape(TypeCircle) {}
 ShapeCircle::ShapeCircle(float radius, Point center, bool is_solid) : Shape(TypeCircle), radius(radius), center(center), is_solid(is_solid) {
-  CalPoint();
   CalVector();
+  CalPoint();
 }
 ShapeCircle::ShapeCircle(Point center, Point point, bool is_solid) : Shape(TypeCircle), radius(Distance(point, center)), center(center), point(point), is_solid(is_solid) {
   CalRadius();
   CalVector();
 }
 
+void ShapeCircle::CalVector() {
+  vector = radius == 0 ? Point(1, 0) : 1/radius * (point - center);
+}
 void ShapeCircle::CalRadius() {
   radius = Distance(point, center);
 }
 void ShapeCircle::CalPoint() {
   point = center + radius * vector;
-}
-void ShapeCircle::CalVector() {
-  vector = radius == 0 ? Point(1, 0) : 1/radius * (point - center);
 }
 void ShapeCircle::SetRadius(float radius) {
   this->radius = abs(radius);
@@ -47,8 +47,8 @@ void ShapeCircle::Read(ifstream* file) {
   file->read((char*)&center.x, sizeof(float));
   file->read((char*)&center.y, sizeof(float));
   file->read((char*)&is_solid, sizeof(bool));
-  CalPoint();
   CalVector();
+  CalPoint();
 }
 } // namespace tkgl
 } // namespace tkht
