@@ -47,6 +47,8 @@ void ShapeCircle::Read(ifstream* file) {
   file->read((char*)&center.x, sizeof(float));
   file->read((char*)&center.y, sizeof(float));
   file->read((char*)&is_solid, sizeof(bool));
+  CalPoint();
+  CalVector();
 }
 } // namespace tkgl
 } // namespace tkht
