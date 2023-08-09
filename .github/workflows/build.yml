@@ -1,0 +1,9 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+    
+jobs:
+  build:
+    uses: ./.github/workflows/actions-build-test.yml

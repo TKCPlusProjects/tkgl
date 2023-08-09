@@ -1,0 +1,47 @@
+name: Actions - Build Project & Run Test
+
+on:
+  workflow_call:
+
+jobs:
+  actions-build-test:
+    name: actions-build-test
+    runs-on: macos-latest
+
+    env:
+      VCPKG_ROOT: '${{ github.workspace }}/vcpkg'
+      BUILD_TYPE: Release
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - uses: actions/cache@v3
+      id: vcpkg-cache
+      with:
+        path: |
+          ${{ github.workspace }}/vcpkg
+          ${{ github.workspace }}/build
+        key: vcpkg-cache-${{ runner.os }}
+          
+    - name: Vcpkg - Install Tool
+      working-directory: ${{ github.workspace }}
+      run: |
+        if [ ! -d vcpkg ]; then
+          git clone https://github.com/Microsoft/vcpkg.git --depth=1
+          cd vcpkg
+          ./bootstrap-vcpkg.sh
+        fi
+
+    - name: CMake - Generate a Project Buildsystem
+      working-directory: ${{ github.workspace }}
+      run: |
+        SET_TOOLCHAIN=$(vcpkg integrate install | grep -o -E "\-DCMAKE_TOOLCHAIN_FILE=.*vcpkg\.cmake")
+        cmake -B build ${SET_TOOLCHAIN} -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DBUILD_TEST=ON
+
+    - name: CMake - Build
+      working-directory: ${{ github.workspace }}
+      run: cmake --build build --config ${{ env.BUILD_TYPE }}
+
+    - name: CMake - Test
+      working-directory: ${{ github.workspace }}
+      run: ctest --test-dir build -C ${{ env.BUILD_TYPE }}

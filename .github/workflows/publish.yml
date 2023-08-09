@@ -1,0 +1,53 @@
+name: Publish
+
+on:
+  push:
+    tags: [ '[0-9]+.[0-9]+.[0-9]+' ]
+
+jobs:
+  build:
+    uses: ./.github/workflows/actions-build-test.yml
+
+  publish:
+    needs: build
+    name: publish
+    runs-on: macos-latest
+    permissions: 
+      actions: write
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Local Info
+      run: |
+        echo LOC_REPO="${GITHUB_REPOSITORY}" >> ${GITHUB_ENV}
+        echo LOC_NAME="$(basename ${GITHUB_REPOSITORY})" >> ${GITHUB_ENV}
+        echo LOC_VERSION="$(basename ${GITHUB_REF})" >> ${GITHUB_ENV}
+        
+    - name: Release Info
+      run: |
+        echo REL_FILENAME="${{ env.LOC_NAME }}-${{ env.LOC_VERSION }}.zip" >> ${GITHUB_ENV}
+        echo REL_URL="https://github.com/${{ env.LOC_REPO }}/releases/download/${{ env.LOC_VERSION }}/${{ env.LOC_NAME }}-${{ env.LOC_VERSION }}.zip" >> ${GITHUB_ENV}
+    
+    - name: Release
+      working-directory: ${{ github.workspace }}
+      env:
+        GH_TOKEN: ${{ secrets.PERSON_ACCESS_TOKEN }}
+      run: |
+        zip -r ${{ env.REL_FILENAME }} lib CMakeLists.txt LICENSE 
+        gh release create ${{ env.LOC_VERSION }} ${{ env.REL_FILENAME }} \
+          -t "Release ${{ env.LOC_VERSION }}" \
+          -n ${{ env.LOC_VERSION }}
+    
+    - name: Release Info Ex
+      working-directory: ${{ github.workspace }}
+      run: |
+        echo REL_HASH=$(vcpkg hash ${{ env.REL_FILENAME }}) >> ${GITHUB_ENV}
+
+    - name: Trigger Registry
+      run: |
+        curl -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: Bearer ${{ secrets.PERSON_ACCESS_TOKEN }}" \
+          https://api.github.com/repos/TKCPlusProjects/tkregistry/actions/workflows/update.yml/dispatches \
+          -d '{"ref": "master","inputs": {"repository": "${{ env.LOC_REPO }}","name": "${{ env.LOC_NAME }}","version": "${{ env.LOC_VERSION }}","filename": "${{ env.REL_FILENAME }}","url": "${{ env.REL_URL }}","hash": "${{ env.REL_HASH }}"}}'
