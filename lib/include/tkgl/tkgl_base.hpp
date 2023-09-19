@@ -27,10 +27,10 @@
 
 #include <tkcore/tkcore.hpp>
 
-/// @namespace Namespace TKHT
+/// @namespace Namespace tkht
 namespace tkht
 {
-/// @namespace Namespace TKGL
+/// @namespace Namespace tkgl
 namespace tkgl
 {
 }
