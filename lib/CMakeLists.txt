@@ -27,6 +27,15 @@ endif()
 target_compile_features(${PROJECT_NAME} 
   PUBLIC cxx_std_17
 )
+# compile options
+if (MSVC)
+  target_compile_options(${PROJECT_NAME} 
+    PUBLIC /utf-8
+  )
+  target_compile_options(${PROJECT_NAME} 
+    PUBLIC /EHsc
+  )
+endif()
 
 # link dependencies
 find_package(glad CONFIG REQUIRED)
