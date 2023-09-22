@@ -24,10 +24,6 @@ int main() {
   camera->update();
   camera->get_viewport(videoMode->width, videoMode->height);
 
-  // set window rect
-  glfwSetWindowPos(Window::Root(), camera->viewport.x, camera->viewport.y);
-  glfwSetWindowSize(Window::Root(), camera->viewport.width, camera->viewport.height);
-
   // set callback
   Window::SetSizeCallback("Demo", [=](int width, int height) {
     Camera::Viewport viewport = camera->get_viewport(width, height);
@@ -39,6 +35,10 @@ int main() {
   Window::SetCursorCallback("Demo", [=](double x, double y) {
     camera->process_mouse_focus(x, y);
   });
+
+  // set window rect
+  glfwSetWindowPos(Window::Root(), camera->viewport.x, camera->viewport.y);
+  glfwSetWindowSize(Window::Root(), camera->viewport.width, camera->viewport.height);
 
   // set input mode
   glfwSetInputMode(Window::Root(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -54,7 +54,7 @@ int main() {
 
   // renderer
   std::shared_ptr<Graphic> graphic = std::make_shared<Graphic>();
-  graphic->path                    = "build/demo.tkg";
+  graphic->path                    = "demo.tkg";
   if (graphic->exists()) {
     graphic->read();
   } else {
