@@ -54,7 +54,7 @@ int main() {
 
   // renderer
   std::shared_ptr<Graphic> graphic = std::make_shared<Graphic>();
-  graphic->path                    = "demo.tkg";
+  graphic->path                    = "build/demo.tkg";
   if (graphic->exists()) {
     graphic->read();
   } else {
